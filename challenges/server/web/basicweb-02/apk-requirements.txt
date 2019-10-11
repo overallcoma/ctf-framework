@@ -1,0 +1,9 @@
+python3
+apache2
+sqlite
+php7
+php7-sqlite3
+php7-apache2
+php-pdo
+php-pdo_sqlite
+php-sqlite3

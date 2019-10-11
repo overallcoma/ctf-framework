@@ -1,0 +1,20 @@
+FROM alpine:latest
+RUN mkdir -p /app/
+WORKDIR /app
+COPY requirements.txt /app
+COPY apk-requirements.txt /app
+COPY CTF-AdvancedWeb-01-Launcher.py /app
+COPY ./website/* /app/
+
+RUN apk update
+RUN cat "apk-requirements.txt" | xargs -n1 apk add;
+
+RUN pip3 install --upgrade pip
+RUN pip3 install -r requirements.txt
+
+RUN rm -rf /var/www/localhost/htdocs
+RUN ln -s /app /var/www/localhost/htdocs
+RUN mkdir /run/apache2
+RUN touch httpd.pid
+EXPOSE 80
+CMD ["python3", "/app/CTF-AdvancedWeb-01-Launcher.py"]

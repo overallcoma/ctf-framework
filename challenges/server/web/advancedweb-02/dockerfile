@@ -1,0 +1,55 @@
+FROM php:7-apache
+
+COPY ./flag.txt /var/www/html
+
+COPY /pages/index.php /var/www/html
+COPY /pages/.htaccess /var/www/html
+COPY /pages/error.html /var/www/html
+
+RUN rm /etc/apache2/apache2.conf
+COPY ./configs/apache2.conf /etc/apache2/apache2.conf
+
+RUN apt update -y
+RUN apt install iputils-ping -y
+
+RUN rm /usr/bin/awk
+COPY ./files-replacements/awk /usr/bin/awk
+RUN chmod +x /usr/bin/awk
+
+RUN rm /bin/cat
+COPY ./files-replacements/cat /bin/cat
+RUN chmod +x /bin/cat
+
+RUN rm /bin/grep
+COPY ./files-replacements/grep /bin/grep
+RUN chmod +x /bin/grep
+
+RUN rm /usr/bin/head
+COPY ./files-replacements/head //usr/bin/head
+RUN chmod +x /usr/bin/head
+
+RUN rm /bin/sed
+COPY ./files-replacements/sed /bin/sed
+RUN chmod +x /bin/sed
+
+RUN rm /usr/bin/tail
+COPY ./files-replacements/tail /usr/bin/tail
+RUN chmod +x /usr/bin/tail
+
+RUN rm /usr/bin/tac
+COPY ./files-replacements/tac /usr/bin/tac
+RUN chmod +x /usr/bin/tac
+
+RUN rm /usr/bin/tee
+COPY ./files-replacements/tee /usr/bin/tee
+RUN chmod +x /usr/bin/tee
+
+RUN rm /bin/echo
+COPY ./files-replacements/echo /bin/echo
+RUN chmod +x /bin/echo
+
+RUN rm /usr/bin/apt
+
+RUN chown root:root /var/www/html
+
+EXPOSE 80

@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  db:
+    image: mysql:5.7
+    volumes:
+      - ./website/data.sql:/docker-entrypoint-initdb.d/dump.sql
+    ports:
+      - "3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: SomeRandomPassword
+      MYSQL_USER: webserver
+      MYSQL_PASSWORD: webserver
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        window: 120s
+  web:
+    build: ../../../../../../Downloads/CTF-AdvancedWeb-01-master
+    depends_on:
+      - db
+    ports:
+      - "80"
+    deploy:
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        window: 120s

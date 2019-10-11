@@ -1,0 +1,15 @@
+DirectoryIndex index.php
+ErrorDocument 404 /error.html
+Options -Indexes
+
+# Deny access to htaccess
+<Files .htaccess>
+Order allow,deny
+Deny from all
+</Files>
+
+# Deny access to flag.txt
+<FilesMatch flag.txt>
+Order allow,deny
+Deny from all
+</FilesMatch>
