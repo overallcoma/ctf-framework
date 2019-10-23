@@ -2,6 +2,7 @@ import consolemenu
 import os
 import subprocess
 import ctff_functions
+import time
 
 
 def subprocess_run(command):
@@ -28,6 +29,6 @@ for setup_folder in setup_folder_list:
     setup_item = consolemenu.items.CommandItem(module_config.prettyName, setup_command)
     main_menu.items.append(setup_item)
 
-    os.wait(10000)
+    time.sleep(10)
 
 main_menu.show()
