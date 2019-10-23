@@ -22,6 +22,7 @@ for setup_folder in setup_folder_list:
     module_config = ctff_functions.config_parse(setup_folder)
     setup_file = os.path.join(setup_folder, "setup.py")
     setup_command = "python3 {}".format(setup_file)
+    print(setup_command)
 
     setup_item = consolemenu.items.CommandItem(module_config.prettyName, setup_command)
     main_menu.items.append(setup_item)
