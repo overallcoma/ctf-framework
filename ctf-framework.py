@@ -24,7 +24,7 @@ while loop:
     choice = input("Enter your choice [1-5]: ")
     if choice == "1":
         print("Environment Setup Selected")
-        subprocess_run("python " + setup_script_location)
+        subprocess_run("python3 " + setup_script_location)
     elif choice == "2":
         print("Menu 2 has been selected")
     elif choice == "3":
