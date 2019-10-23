@@ -1,5 +1,4 @@
 import subprocess
-import ctff_functions
 
 
 def subprocess_run(command):
