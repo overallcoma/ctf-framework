@@ -1,4 +1,3 @@
-
 def setup_menu():
     import subprocess
     import os

@@ -1,40 +1,28 @@
+import consolemenu
+import os
 import subprocess
 import ctff_functions
-import ctff_setup
 
 
 def subprocess_run(command):
-    subprocess.call(command, shell=True)
+    subprocess.run(command, shell=True)
 
 
-def print_menu():
-    print(30 * "-", "MENU", 30 * "-")
-    print("1. Setup Environment")
-    print("2. Use Challange Generator")
-    print("3. Create Challenge Container")
-    print("4. XXXXXXX")
-    print("5. Exit")
-    print(67 * "-")
+main_menu = consolemenu.ConsoleMenu("CTF Framework Setup", "Select your function")
 
+host_setup_folder = os.path.join(os.path.abspath("."), "host_setup")
+host_setup_folder_contents = os.listdir(host_setup_folder)
 
-setup_script_location = './ctff_setup/setup_menu.py'
+setup_folder_list = []
+for folder in host_setup_folder_contents:
+    folder = os.path.join(host_setup_folder, folder)
+    if os.path.isdir(folder):
+        setup_folder_list.append(folder)
+for setup_folder in setup_folder_list:
+    module_config = ctff_functions.config_parse(setup_folder)
+    setup_file = os.path.join(setup_folder, "setup.py")
 
-loop = True
-while loop:
-    print_menu()
-    choice = input("Enter your choice [1-5]: ")
-    if choice == "1":
-        print("Environment Setup Selected")
-        ctff_setup.setup_menu()
-        #subprocess_run("python3 " + setup_script_location)
-    elif choice == "2":
-        print("Menu 2 has been selected")
-    elif choice == "3":
-        print("Menu 3 has been selected")
-    elif choice == "4":
-        print("Menu 4 has been selected")
-    elif choice == "5":
-        print("Menu 5 has been selected")
-        loop = False
-    else:
-        print("Wrong option selection. Enter any key to try again.")
+    setup_item = consolemenu.items.CommandItem(module_config.prettyName, "python3 {}".format(setup_file))
+    main_menu.items.append(setup_item)
+
+main_menu.show()
