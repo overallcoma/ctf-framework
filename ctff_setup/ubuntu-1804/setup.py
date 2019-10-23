@@ -15,7 +15,7 @@ if not os.geteuid() == 0:
     exit(1)
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-e", "--email", dest="email", help="email for reverse proxy setup")
+parser.add_argument("-e", "--email", dest="email", help="email for reverse proxy ctff_setup")
 args = parser.parse_args()
 email = args.email
 if email is None:
