@@ -2,7 +2,7 @@ import subprocess
 
 
 def subprocess_run(command):
-    subprocess.run(command, shell=True, check=True)
+    subprocess.call(command, shell=True, check=True)
 
 
 def print_menu():

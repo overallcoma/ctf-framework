@@ -23,6 +23,7 @@ for folder in folder_list:
 def subprocess_run(command):
     subprocess.run(command, shell=True, check=True)
 
+
 choice = ctff_functions.print_menu(menu_items)
 print(choice)
 subprocess_run(menu_items[choice].setupFile)
