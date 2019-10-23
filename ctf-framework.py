@@ -26,7 +26,7 @@ for setup_folder in setup_folder_list:
     print(setup_file)
     print(setup_command)
 
-    setup_item = consolemenu.items.CommandItem(module_config.prettyName, setup_command)
+    setup_item = consolemenu.items.FunctionItem(module_config.prettyName, subprocess_run, args=[setup_command])
     main_menu.items.append(setup_item)
 
 main_menu.show()
