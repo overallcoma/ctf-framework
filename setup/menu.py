@@ -1,6 +1,6 @@
 import subprocess
 import os
-import ctff_functions
+from .. import ctff_functions
 
 os.chdir(os.path.dirname(__file__))
 config_file_name = 'info.cfg'
