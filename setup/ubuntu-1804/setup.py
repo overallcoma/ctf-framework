@@ -1,17 +1,24 @@
 import argparse
 import subprocess
+import platform
 import os
+
+target_OS = "Ubuntu-18.04"
+
+if target_OS not in platform.platform():
+    print("This script is only intended for Ubuntu 18.04")
+    exit(1)
 
 # This script must be run as root!
 if not os.geteuid() == 0:
     print("This script must be run as root")
-    exit()
+    exit(1)
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-e", "--email", dest="email", help="email for reverse proxy setup")
 args = parser.parse_args()
 email = args.email
-if email == None:
+if email is None:
     print("Please specify an email with -e")
     exit(1)
 

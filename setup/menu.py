@@ -1,56 +1,29 @@
 import subprocess
 import os
-from configparser import ConfigParser
+import ctff_functions
 
 os.chdir(os.path.dirname(__file__))
+config_file_name = 'info.cfg'
+setup_python_name = 'setup.py'
 
-menu_list = []
+folder_list = []
 for folder in os.listdir("."):
     if os.path.isdir(folder):
-        if (os.path.join(os.path.abspath("."), folder)):
-            menu_list.append(folder)
+        if os.path.join(os.path.abspath("."), folder):
+            folder_list.append(os.path.join(os.path.abspath("."), folder))
 
-    config = ConfigParser()
-    print(d + "/info.cfg")
-    config_file = (d + " /info.cfg")
-    config.read(config_file)
+menu_items = []
 
-    module_identity = config["module-identity"]
-    module_prettyname = module_identity["prettyname"]
-    menu_list.append(module_prettyname)
+for folder in folder_list:
+    print(folder)
+    module_config = ctff_functions.config_parse(folder)
+    menu_items.append(module_config)
 
 
 def subprocess_run(command):
     subprocess.run(command, shell=True, check=True)
 
-
-def print_menu():
-    print(30 * "-", "MENU", 30 * "-")
-    print("1. " + menu_list[0])
-    print("2. Use Challange Generator")
-    print("3. Create Challenge Container")
-    print("4. XXXXXXX")
-    print("5. Exit")
-    print(67 * "-")
-
-
-setup_script_location = './setup/setup.py'
-
-loop = True
-while loop:
-    print_menu()
-    choice = input("Enter your choice [1-5]: ")
-    if choice == 1:
-        print("Environment Setup Selected")
-        subprocess_run("python3 " + setup_script_location)
-    elif choice == 2:
-        print("Menu 2 has been selected")
-    elif choice == 3:
-        print("Menu 3 has been selected")
-    elif choice == 4:
-        print("Menu 4 has been selected")
-    elif choice == 5:
-        print("Menu 5 has been selected")
-        loop = False
-    else:
-        print("Wrong option selection. Enter any key to try again.")
+choice = ctff_functions.print_menu(menu_items)
+print(choice)
+subprocess_run(menu_items[choice].setupFile)
+exit(0)
