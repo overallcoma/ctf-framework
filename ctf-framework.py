@@ -21,8 +21,9 @@ for folder in host_setup_folder_contents:
 for setup_folder in setup_folder_list:
     module_config = ctff_functions.config_parse(setup_folder)
     setup_file = os.path.join(setup_folder, "setup.py")
+    setup_command = "python3 {}".format(setup_file)
 
-    setup_item = consolemenu.items.CommandItem(module_config.prettyName, "python3 {}".format(setup_file))
+    setup_item = consolemenu.items.CommandItem(module_config.prettyName, setup_command)
     main_menu.items.append(setup_item)
 
 main_menu.show()
