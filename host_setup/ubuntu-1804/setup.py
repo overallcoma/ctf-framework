@@ -19,8 +19,7 @@ parser.add_argument("-e", "--email", dest="email", help="email for reverse proxy
 args = parser.parse_args()
 email = args.email
 if email is None:
-    print("Please specify an email with -e")
-    exit(1)
+    email = input("Please enter email address to use for reverse proxy")
 
 docker_gpg_url = "https://download.docker.com/linux/ubuntu/gpg"
 docker_apt_url = "https://download.docker.com/linux/ubuntu"
