@@ -5,19 +5,20 @@ def print_menu(menu_items):
         list_count = 1
         print(30 * "-", "MENU", 30 * "-")
         for menu_item in menu_items:
-            print("{}. {}".format(list_count, menu_item.prettyName))
+            print("{}. {}".format(list_count, menu_item.modulePrettyName))
             list_count = list_count + 1
+        print("{}. {}".format(list_count, 'Exit/Return'))
         print(64 * "-")
 
         if len(menu_items) > 0:
-            choice = input("Enter your choice: [{}-{}] ".format("1", len(menu_items)))
+            choice = input("Enter your choice: [{}-{}] ".format("1", (len(menu_items) + 1)))
         else:
             print("No menu items available")
             choice = 0
 
         try:
             choice = int(choice)
-            if choice > len(menu_items):
+            if choice > (len(menu_items) + 1):
                 choice = 0
             else:
                 choice = int(choice)

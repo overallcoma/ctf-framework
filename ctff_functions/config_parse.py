@@ -1,4 +1,3 @@
-# config_parse.py
 import os
 from configparser import ConfigParser
 
@@ -6,25 +5,31 @@ config_file_name = 'info.cfg'
 
 
 class CtffModuleConfig(object):
-    prettyName = ''
-    setupFile = ''
+    moduleType = ''
+    modulePrettyName = ''
+    modulePath = ''
 
-    def __init__(self, prettyname, setupfile):
-        self.prettyName = prettyname
-        self.setupFile = setupfile
+    def __init__(self, moduletype, moduleprettyname, modulepath):
+        self.moduleType = moduletype
+        self.modulePrettyName = moduleprettyname
+        self.modulePath = modulepath
 
 
 def config_parse(folder):
-    if os.path.join(folder, config_file_name):
+    if os.path.exists(os.path.join(folder, config_file_name)):
         config_file = os.path.join(folder, config_file_name)
     else:
-        exit(1)
+        return 0
     config = ConfigParser()
-    config.read(config_file)
-    module_identity = config["module-identity"]
-    module_pretty_name = module_identity["pretty-name"]
-    module_options = config["module-options"]
-    module_run_script = module_options["run-script"]
-    module_run_script = os.path.join(folder, module_run_script)
-    module_configuration = CtffModuleConfig(module_pretty_name, module_run_script)
+    try:
+        config.read(config_file)
+    except Exception as e:
+        print(e)
+    module_info = config["module-info"]
+    module_type = module_info["module-type"]
+    try:
+        module_prettyname = module_info["pretty-name"]
+    except Exception as e:
+        module_prettyname = 'No PrettyName'
+    module_configuration = CtffModuleConfig(module_type, module_prettyname, folder)
     return module_configuration

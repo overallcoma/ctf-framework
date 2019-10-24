@@ -7,15 +7,30 @@ def subprocess_run(command):
     subprocess.run(command, shell=True)
 
 
-host_setup_folder = os.path.join(os.path.abspath("."), "host_setup")
-host_setup_folder_contents = os.listdir(host_setup_folder)
+def menu_select(folder):
+    config_modules = ctff_functions.config_collect(folder)
+    selection = ctff_functions.print_menu(config_modules)
+    # This handles the exit selection #
+    if selection == len(config_modules):
+        return False
+    selected_module = config_modules[selection]
+    # print(len(config_modules))
+    if selected_module.moduleType == "folder":
+        selected_path = config_modules[selection].modulePath
+        menu_select(selected_path)
+    if selected_module.moduleType == "installer":
+        selected_path = config_modules[selection].modulePath
+        setup_path = os.path.join(selected_path, "setup.py")
+        if os.path.exists(setup_path):
+            print(setup_path)
+            subprocess_run(setup_path)
+    return True
 
-setup_modules = []
-for folder in host_setup_folder_contents:
-    folder = os.path.join(host_setup_folder, folder)
-    if os.path.isdir(folder):
-        setup_modules.append(ctff_functions.config_parse(folder))
 
-selection = ctff_functions.print_menu(setup_modules)
-command = "python3 " + setup_modules[selection].setupFile
-subprocess_run(command)
+startup_folder = os.path.abspath(".")
+target_folder = startup_folder
+
+run = True
+while run:
+    run = menu_select(target_folder)
+print("Exiting CTF-Framework")
