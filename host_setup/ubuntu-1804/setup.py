@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-import argparse
 import subprocess
 import platform
 import os
@@ -16,12 +15,23 @@ if not os.geteuid() == 0:
     print("This script must be run as root")
     exit(1)
 
-parser = argparse.ArgumentParser()
-parser.add_argument("-e", "--email", dest="email", help="email for reverse proxy ctff_setup")
-args = parser.parse_args()
-email = args.email
-if email is None:
-    email = input("Please enter email address to use for reverse proxy:  ")
+use_portainer = ''
+use_reverseproxy = ''
+reverseproxy_email = ''
+portainer_domain = ''
+
+use_portainer = input("Do you want to install Portainer? (Y/N) : ")
+use_portainer = use_portainer.lower().strip()
+use_reverseproxy = input("Do you want to install the reverse proxy with LetsEncrypt? (Y/N) : ")
+use_reverseproxy = use_reverseproxy.lower().strip()
+if use_reverseproxy == "y":
+    while reverseproxy_email == '':
+        reverseproxy_email = input("Please enter email address to use for reverse proxy:  ")
+        reverseproxy_email = reverseproxy_email.lower().strip()
+    if use_portainer == "y":
+        while portainer_domain == '':
+            portainer_domain = input("What domain name would you like to use for portainer? : ")
+            portainer_domain = portainer_domain.lower().strip()
 
 docker_gpg_url = "https://download.docker.com/linux/ubuntu/gpg"
 docker_apt_url = "https://download.docker.com/linux/ubuntu"
@@ -56,19 +66,23 @@ except Exception as e:
     print("Error preparing the environment for docker containers")
     exit(1)
 
-try:
-    print("Setting up Portainer")
-    subprocess_run("docker volume create portainer_data")
-    subprocess_run("docker run -d --restart=unless-stopped -p 8000:8000 -p 9000:9000 --name portainer -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer")
-except Exception as e:
-    print(e)
-    print("Error setting up Portainer")
-    exit(1)
+if use_portainer == "y":
+    try:
+        print("Setting up Portainer")
+        subprocess_run("docker volume create portainer_data")
+        if portainer_domain != 'y':
+            subprocess_run("docker run -d --restart=unless-stopped -p 8000:8000 -p 9000:9000 --name portainer -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer")
+        elif portainer_domain == 'y':
+            subprocess_run("docker run -d --restart=unless-stopped -p 8000:8000 -p 9000:9000 --name portainer -e VIRTUAL_HOST={} -e LETSENCRYPT_HOST={} -e LETSENCRYPT_EMAIL={} -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer".format(portainer_domain, portainer_domain, reverseproxy_email))
+    except Exception as e:
+        print(e)
+        print("Error setting up Portainer")
+        exit(1)
 
 try:
     print("Setting up the Reverse Proxy and LetsEncrypt Helper")
     subprocess_run("docker run --detach --restart=unless-stopped --name nginx-proxy --publish 80:80 --publish 443:443 --volume /etc/nginx/certs --volume /etc/nginx/vhost.d --volume /usr/share/nginx/html --volume /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy")
-    subprocess_run("sudo docker run --detach --restart=unless-stopped --name nginx-proxy-letsencrypt --volumes-from nginx-proxy --volume /var/run/docker.sock:/var/run/docker.sock:ro --env " + email + " jrcs/letsencrypt-nginx-proxy-companion")
+    subprocess_run("sudo docker run --detach --restart=unless-stopped --name nginx-proxy-letsencrypt --volumes-from nginx-proxy --volume /var/run/docker.sock:/var/run/docker.sock:ro --env " + reverseproxy_email + " jrcs/letsencrypt-nginx-proxy-companion")
 except Exception as e:
     print(e)
     print("Error Setting up the Reverse Proxy and the LetsEncrypt Helper")
