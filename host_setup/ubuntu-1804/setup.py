@@ -79,14 +79,15 @@ if use_portainer == "y":
         print("Error setting up Portainer")
         exit(1)
 
-try:
-    print("Setting up the Reverse Proxy and LetsEncrypt Helper")
-    subprocess_run("docker run --detach --restart=unless-stopped --name nginx-proxy --publish 80:80 --publish 443:443 --volume /etc/nginx/certs --volume /etc/nginx/vhost.d --volume /usr/share/nginx/html --volume /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy")
-    subprocess_run("sudo docker run --detach --restart=unless-stopped --name nginx-proxy-letsencrypt --volumes-from nginx-proxy --volume /var/run/docker.sock:/var/run/docker.sock:ro --env " + reverseproxy_email + " jrcs/letsencrypt-nginx-proxy-companion")
-except Exception as e:
-    print(e)
-    print("Error Setting up the Reverse Proxy and the LetsEncrypt Helper")
-    exit(1)
+if use_reverseproxy == 'y':
+    try:
+        print("Setting up the Reverse Proxy and LetsEncrypt Helper")
+        subprocess_run("docker run --detach --restart=unless-stopped --name nginx-proxy --publish 80:80 --publish 443:443 --volume /etc/nginx/certs --volume /etc/nginx/vhost.d --volume /usr/share/nginx/html --volume /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy")
+        subprocess_run("docker run --detach --restart=unless-stopped --name nginx-proxy-letsencrypt --volumes-from nginx-proxy --volume /var/run/docker.sock:/var/run/docker.sock:ro --env " + reverseproxy_email + " jrcs/letsencrypt-nginx-proxy-companion")
+    except Exception as e:
+        print(e)
+        print("Error Setting up the Reverse Proxy and the LetsEncrypt Helper")
+        exit(1)
 
 try:
     print("Setting up the Python3 Environemnt")
