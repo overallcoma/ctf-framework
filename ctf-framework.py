@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-
 import os
 import subprocess
 import ctff_functions
@@ -24,7 +23,6 @@ def menu_select(folder):
         selected_path = config_modules[selection].modulePath
         setup_path = os.path.join(selected_path, "setup.py")
         if os.path.exists(setup_path):
-            print(setup_path)
             subprocess_run(setup_path)
     return True
 
