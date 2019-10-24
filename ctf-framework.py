@@ -8,8 +8,19 @@ def subprocess_run(command):
     subprocess.run(command, shell=True)
 
 
+def clear():
+    # for windows
+    if os.name == 'nt':
+        _ = os.system('cls')
+
+        # for mac and linux(here, os.name is 'posix')
+    else:
+        _ = os.system('clear')
+
+
 def menu_select(folder):
     config_modules = ctff_functions.config_collect(folder)
+    clear()
     selection = ctff_functions.print_menu(config_modules)
     # This handles the exit selection #
     if selection == len(config_modules):
