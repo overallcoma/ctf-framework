@@ -99,9 +99,13 @@ try:
     print("")
     print("Rebooting host now - reconnect when reboot is complete")
     print("")
-    if use_portainer == 'y' and portainer_domain == 0:
+    print("Portainer Value = " + use_portainer)
+    print("Portainer Domain = " + portainer_domain)
+    print("Portainer Vaolue Logic = " + str(use_portainer == 1))
+    print("Portainer Domain Logic = " + str(portainer_domain != 1))
+    if use_portainer == 1 and portainer_domain == 0:
         print("Portainer should be available on port 9000 of this host after reboot")
-    if use_portainer == 'y' and portainer_domain != 0:
+    if use_portainer == 1 and portainer_domain != 0:
         print("Portainer should be available at https://{} after reboot is complete".format(portainer_domain))
     print(64 * "-")
     subprocess_run("reboot")
