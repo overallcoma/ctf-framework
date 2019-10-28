@@ -22,7 +22,7 @@ def menu_select(folder):
     selection = ctff_functions.print_menu(config_modules)
     print(selection)
     # This handles the exit selection #
-    if selection == len(config_modules) + 1:
+    if selection == len(config_modules):
         return True
     selected_module = config_modules[selection]
     if selected_module.moduleType == "folder":
