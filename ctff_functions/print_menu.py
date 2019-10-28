@@ -8,10 +8,11 @@ def print_menu(menu_items):
         for menu_item in menu_items:
             print("{}. {}".format(list_count, menu_item.modulePrettyName))
             list_count = list_count + 1
+        if len(menu_items) <= 0:
+            print("-----No modules found-----")
+            print("")
         if len(menu_items) > 0:
             choice = input("Enter your choice: [{}-{}] ".format("1", (len(menu_items) + 1)))
-        else:
-            print("-----No modules found-----")
         print("{}. {}".format(list_count, 'Exit/Return'))
         print(64 * "-")
 
