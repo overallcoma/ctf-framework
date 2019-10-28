@@ -15,10 +15,10 @@ if not os.geteuid() == 0:
     print("This script must be run as root")
     exit(1)
 
-use_portainer = ''
-use_reverseproxy = ''
-reverseproxy_email = ''
-portainer_domain = ''
+use_portainer = 0
+use_reverseproxy = 0
+reverseproxy_email = 0
+portainer_domain = 0
 
 use_portainer = input("Do you want to install Portainer? (Y/N) : ")
 use_portainer = use_portainer.lower().strip()
@@ -41,18 +41,6 @@ def subprocess_run(command):
     subprocess.run(command, shell=True, check=True)
 
 
-def line_prepender(filename, newline):
-    file = open(filename, 'r')
-    file_content = file.readlines()
-    file.close
-    newline = newline + '\n'
-    file = open(filename, 'w')
-    file.write(newline)
-    for line in file_content:
-        file.write(line)
-    file.close
-
-
 try:
     print("Setting up the Environment for docker containers")
     subprocess_run("apt update -y")
@@ -70,9 +58,9 @@ if use_portainer == "y":
     try:
         print("Setting up Portainer")
         subprocess_run("docker volume create portainer_data")
-        if portainer_domain != 'y':
+        if portainer_domain == 0:
             subprocess_run("docker run -d --restart=unless-stopped -p 8000:8000 -p 9000:9000 --name portainer -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer")
-        elif portainer_domain == 'y':
+        elif portainer_domain != 0:
             subprocess_run("docker run -d --restart=unless-stopped -p 8000:8000 -p 9000:9000 --name portainer -e VIRTUAL_HOST={} -e LETSENCRYPT_HOST={} -e LETSENCRYPT_EMAIL={} -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer".format(portainer_domain, portainer_domain, reverseproxy_email))
     except Exception as e:
         print(e)
@@ -90,20 +78,24 @@ if use_reverseproxy == 'y':
         exit(1)
 
 try:
-    print("Setting up the Python3 Environemnt")
-    subprocess_run("apt install -y python3-pip")
-    line_prepender("/root/.bashrc", "alias python=python3")
-except Exception as e:
-    print(e)
-    print("Error setting up the Python enviornment")
-
-try:
     print("Doing final updates and rebooting")
     subprocess_run("apt update -y")
     subprocess_run("apt upgrade -y")
     subprocess_run("apt dist-upgrade -y ")
     subprocess_run("apt autoremove -y")
     subprocess_run("apt autoclean -y")
+    print("")
+    print("")
+    print("")
+    print(64 * "-")
+    print("Host Prep Process is complete")
+    print("")
+    print("Rebooting host now - reconnect when reboot is complete")
+    print("")
+    if use_portainer == 1:
+        print("Portainer should be available ")
+
+
     subprocess_run("reboot")
 except Exception as e:
     print(e)
