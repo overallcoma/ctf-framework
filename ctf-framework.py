@@ -34,7 +34,7 @@ def menu_select(folder):
         selected_path = config_modules[selection].modulePath
         setup_path = os.path.join(selected_path, "setup.py")
         if os.path.exists(setup_path):
-            subprocess_command = 'python3' + setup_path
+            subprocess_command = 'python3 ' + setup_path
             subprocess_run(subprocess_command)
             exit(0)
     return True
