@@ -2,6 +2,7 @@
 import os
 import subprocess
 import ctff_functions
+import pathlib
 
 
 def subprocess_run(command):
@@ -40,14 +41,19 @@ def menu_select(folder):
 
 startup_folder = os.path.abspath(".")
 target_folder = startup_folder
+try:
+    challenges_folder = os.path.join(startup_folder, "challenges")
+except Exception as e:
+    print("Can't locate challenges folder")
+    print(e)
+    exit(1)
 
-need_chmod = 1
+need_chmod = 0
 
-for python_file in os.listdir(startup_folder):
-    if python_file.endswith(".py"):
-        print(python_file)
-        if not os.access(python_file, os.X_OK):
-            need_chmod = 1
+for python_file in pathlib.Path(challenges_folder).rglob('*.py'):
+    if not os.access(python_file, os.X_OK):
+        need_chmod = 1
+
 
 if need_chmod == 1:
     clear()
@@ -56,13 +62,12 @@ if need_chmod == 1:
     choice = input('Would you like to make the python files in this folder executable?  (Y/N)')
     choice = choice.lower().strip()
     if choice == "y":
-        for python_file in os.listdir(startup_folder):
-            if python_file.endswith(".py"):
-                if not os.access(python_file, os.X_OK):
-                    python_file = os.path.abspath(python_file)
-                    stat_mode = os.stat(python_file).st_mode
-                    stat_mode |= (stat_mode & 0o444) >> 2
-                    os.chmod(python_file, stat_mode)
+        for python_file in pathlib.Path(challenges_folder).rglob('*.py'):
+            if not os.access(python_file, os.X_OK):
+                python_file = os.path.abspath(python_file)
+                stat_mode = os.stat(python_file).st_mode
+                stat_mode |= (stat_mode & 0o444) >> 2
+                os.chmod(python_file, stat_mode)
 
 
 run = True
