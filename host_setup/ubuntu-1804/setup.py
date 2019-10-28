@@ -29,7 +29,7 @@ if use_reverseproxy == "y":
         reverseproxy_email = input("Please enter email address to use for reverse proxy:  ")
         reverseproxy_email = reverseproxy_email.lower().strip()
     if use_portainer == "y":
-        while portainer_domain == '':
+        while portainer_domain == 0:
             portainer_domain = input("What domain name would you like to use for portainer? : ")
             portainer_domain = portainer_domain.lower().strip()
 
