@@ -44,6 +44,8 @@ if use_reverseproxy == 1:
         while portainer_domain == 0:
             portainer_domain = input("What domain name would you like to use for portainer? : ")
             portainer_domain = portainer_domain.lower().strip()
+            if portainer_domain == "":
+                portainer_domain = 0
 
 docker_gpg_url = "https://download.docker.com/linux/ubuntu/gpg"
 docker_apt_url = "https://download.docker.com/linux/ubuntu"
@@ -99,13 +101,9 @@ try:
     print("")
     print("Rebooting host now - reconnect when reboot is complete")
     print("")
-    print("Portainer Value = " + use_portainer)
-    print("Portainer Domain = " + portainer_domain)
-    print("Portainer Vaolue Logic = " + str(use_portainer == 1))
-    print("Portainer Domain Logic = " + str(portainer_domain != 1))
     if use_portainer == 1 and portainer_domain == 0:
         print("Portainer should be available on port 9000 of this host after reboot")
-    if use_portainer == 1 and portainer_domain != 0:
+    if use_portainer == 1 and isinstance(portainer_domain, str):
         print("Portainer should be available at https://{} after reboot is complete".format(portainer_domain))
     print(64 * "-")
     subprocess_run("reboot")
