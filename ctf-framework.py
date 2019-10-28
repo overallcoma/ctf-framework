@@ -36,7 +36,7 @@ def menu_select(folder):
             subprocess_run(subprocess_command)
     menu_select(folder)
     # If we haven't hit exit condition, we print the menu again
-    return True
+    return False
 
 
 startup_folder = os.path.abspath(".")

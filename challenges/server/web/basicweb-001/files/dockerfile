@@ -1,0 +1,47 @@
+FROM php:apache
+RUN mkdir -p /app/
+WORKDIR /app
+
+COPY errorpage.html /app/errorpage.html
+COPY flagpage.html /app/$FLAGPAGE$
+COPY htaccess /app/.htaccess
+COPY index.php /app/index.php
+COPY passhashgen.php /app/passhashgen.php
+
+RUN apt update -y
+RUN apt install sqlite3
+
+RUN php passhashgen.php > password.txt
+
+RUN mkdir -p /db/
+RUN sqlite3 /db/password.db 'DROP TABLE IF EXISTS passwords'
+RUN sqlite3 /db/password.db 'CREATE TABLE IF NOT EXISTS passwords (record_number integer PRIMARY KEY AUTOINCREMENT, password text, pagename text)'
+RUN sqlite3 /db/password.db 'INSERT INTO passwords(password,pagename) VALUES ('$PASSWORD$','$FLAGPAGE$')'
+
+
+
+
+
+
+FROM alpine:latest
+RUN mkdir -p /app/
+WORKDIR /app
+COPY requirements.txt /app
+COPY apk-requirements.txt /app
+COPY CTF-BasicWeb-01-Launcher.py /app
+
+RUN apk update
+RUN cat "apk-requirements.txt" | xargs -n1 apk add;
+
+RUN pip3 install --upgrade pip
+RUN pip3 install -r requirements.txt
+
+RUN mkdir /db
+RUN touch /db/password.db
+RUN chown apache:apache /db/password.db
+RUN rm -rf /var/www/localhost/htdocs
+RUN ln -s /app /var/www/localhost/htdocs
+RUN mkdir /run/apache2
+RUN touch httpd.pid
+EXPOSE 80
+CMD ["python3", "/app/CTF-BasicWeb-01-Launcher.py"]

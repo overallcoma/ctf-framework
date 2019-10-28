@@ -5,14 +5,14 @@ import subprocess
 import os
 
 
-def dbconnect(dbfile_func):
-    try:
-        connection = sqlite3.connect(dbfile_func)
-        print(sqlite3.version)
-        connection.close()
-    except sqlite3.Error as t:
-        print(t)
-        exit(1)
+# def dbconnect(dbfile_func):
+#     try:
+#         connection = sqlite3.connect(dbfile_func)
+#         print(sqlite3.version)
+#         connection.close()
+#     except sqlite3.Error as t:
+#         print(t)
+#         exit(1)
 
 
 def write_database(dbfile_func, insert_password, insert_page):
