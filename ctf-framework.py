@@ -41,18 +41,19 @@ def menu_select(folder):
 startup_folder = os.path.abspath(".")
 target_folder = startup_folder
 
-need_chmod = 0
+need_chmod = 1
 
 for python_file in os.listdir(startup_folder):
     if python_file.endswith(".py"):
+        print(python_file)
         if not os.access(python_file, os.X_OK):
             need_chmod = 1
 
 if need_chmod == 1:
     clear()
     print("It looks like you're running CTF_Framework for the first time")
-    print("\n")
-    choice = input('Would you like to make the python files in this folder executable?  (Y\N)')
+    print("")
+    choice = input('Would you like to make the python files in this folder executable?  (Y/N)')
     choice = choice.lower().strip()
     if choice == "y":
         for python_file in os.listdir(startup_folder):
