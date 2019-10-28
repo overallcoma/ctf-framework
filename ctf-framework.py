@@ -22,17 +22,19 @@ def menu_select(folder):
     selection = ctff_functions.print_menu(config_modules)
     # This handles the exit selection #
     if selection == len(config_modules) + 1:
-        return False
+        return True
     selected_module = config_modules[selection]
     if selected_module.moduleType == "folder":
         selected_path = config_modules[selection].modulePath
         menu_select(selected_path)
+        return True
     if selected_module.moduleType == "installer":
         selected_path = config_modules[selection].modulePath
         setup_path = os.path.join(selected_path, "setup.py")
         if os.path.exists(setup_path):
             subprocess_command = 'python3 ' + setup_path
             subprocess_run(subprocess_command)
+            return False
     return True
 
 
