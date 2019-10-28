@@ -1,6 +1,7 @@
 def print_menu(menu_items):
     selection = 0
 
+
     def print_menu_internal(menu_items):
         list_count = 1
         print(30 * "-", "MENU", 30 * "-")
