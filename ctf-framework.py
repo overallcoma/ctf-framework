@@ -27,7 +27,6 @@ def menu_select(folder):
     if selection == len(config_modules):
         return False
     selected_module = config_modules[selection]
-    # print(len(config_modules))
     if selected_module.moduleType == "folder":
         selected_path = config_modules[selection].modulePath
         menu_select(selected_path)
@@ -35,7 +34,8 @@ def menu_select(folder):
         selected_path = config_modules[selection].modulePath
         setup_path = os.path.join(selected_path, "setup.py")
         if os.path.exists(setup_path):
-            subprocess_run(setup_path)
+            subprocess_command = 'python3' + setup_path
+            subprocess_run(subprocess_command)
             exit(0)
     return True
 
