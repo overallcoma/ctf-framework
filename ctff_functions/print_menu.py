@@ -40,5 +40,6 @@ def print_menu(menu_items):
 
     while selection == 0:
         print_menu_internal(menu_items)
+
     selection = selection - 1
     return selection
