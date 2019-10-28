@@ -5,9 +5,10 @@ def print_menu(menu_items):
         list_count = 1
         choice = 0
         print(30 * "-", "MENU", 30 * "-")
-        for menu_item in menu_items:
-            print("{}. {}".format(list_count, menu_item.modulePrettyName))
-            list_count = list_count + 1
+        if len(menu_items) > 0:
+            for menu_item in menu_items:
+                print("{}. {}".format(list_count, menu_item.modulePrettyName))
+                list_count = list_count + 1
         if len(menu_items) <= 0:
             print("-----No modules found-----")
             print("")
