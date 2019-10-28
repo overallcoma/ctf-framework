@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import subprocess
 import platform
 import os
@@ -15,31 +13,40 @@ if not os.geteuid() == 0:
     print("This script must be run as root")
     exit(1)
 
-use_portainer = 0
-use_reverseproxy = 0
+
+def subprocess_run(command):
+    subprocess.run(command, shell=True, check=True)
+
+
+def yes_no_input(prompt_string):
+    response_error = "Invalid Selection"
+    while response_error == "Invalid Selection":
+        prompt_string_yn = prompt_string + " (Y/N):"
+        response = input(prompt_string_yn)
+        response = response.lower().strip()
+        if response[0] == "y":
+            return 1
+        if response[0] == "n":
+            return 0
+    print(response_error)
+
+
 reverseproxy_email = 0
 portainer_domain = 0
 
-use_portainer = input("Do you want to install Portainer? (Y/N) : ")
-use_portainer = use_portainer.lower().strip()
-use_reverseproxy = input("Do you want to install the reverse proxy with LetsEncrypt? (Y/N) : ")
-use_reverseproxy = use_reverseproxy.lower().strip()
-if use_reverseproxy == "y":
+use_portainer = yes_no_input("Do you want to install Portainer?")
+use_reverseproxy = yes_no_input("Do you want to install the reverse proxy with LetsEncrypt?")
+if use_reverseproxy == 1:
     while reverseproxy_email == 0:
         reverseproxy_email = input("Please enter email address to use for reverse proxy:  ")
         reverseproxy_email = reverseproxy_email.lower().strip()
-    if use_portainer == "y":
+    if use_portainer == 1:
         while portainer_domain == 0:
             portainer_domain = input("What domain name would you like to use for portainer? : ")
             portainer_domain = portainer_domain.lower().strip()
 
 docker_gpg_url = "https://download.docker.com/linux/ubuntu/gpg"
 docker_apt_url = "https://download.docker.com/linux/ubuntu"
-
-
-def subprocess_run(command):
-    subprocess.run(command, shell=True, check=True)
-
 
 try:
     print("Setting up the Environment for docker containers")
@@ -54,7 +61,7 @@ except Exception as e:
     print("Error preparing the environment for docker containers")
     exit(1)
 
-if use_portainer == "y":
+if use_portainer == 1:
     try:
         print("Setting up Portainer")
         subprocess_run("docker volume create portainer_data")
@@ -67,7 +74,7 @@ if use_portainer == "y":
         print("Error setting up Portainer")
         exit(1)
 
-if use_reverseproxy == 'y':
+if use_reverseproxy == 1:
     try:
         print("Setting up the Reverse Proxy and LetsEncrypt Helper")
         subprocess_run("docker run --detach --restart=unless-stopped --name nginx-proxy --publish 80:80 --publish 443:443 --volume /etc/nginx/certs --volume /etc/nginx/vhost.d --volume /usr/share/nginx/html --volume /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy")
@@ -92,9 +99,9 @@ try:
     print("")
     print("Rebooting host now - reconnect when reboot is complete")
     print("")
-    if use_portainer == 1 and portainer_domain == 0:
+    if use_portainer == 'y' and portainer_domain == 0:
         print("Portainer should be available on port 9000 of this host after reboot")
-    if use_portainer == 1 and portainer_domain != 0:
+    if use_portainer == 'y' and portainer_domain != 0:
         print("Portainer should be available at https://{} after reboot is complete".format(portainer_domain))
     print(64 * "-")
     subprocess_run("reboot")
