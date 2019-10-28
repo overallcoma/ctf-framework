@@ -21,20 +21,21 @@ def print_menu(menu_items):
         except Exception as e:
             print(e)
             choice = 0
+            return 0
 
         # Check if the value is above the number of menu items
         try:
             while choice > (len(menu_items) + 1):
                 print("Please select a valid menu item: ")
-                choice = 0
+                return 0
         except Exception as e:
             print(e)
-            choice = 0
+            return 0
 
         # Check if the value was zero
         while choice <= 0:
             print("Please select a valid menu item:")
-            choice = 0
+            return 0
 
         return choice
 
