@@ -25,7 +25,7 @@ use_portainer = use_portainer.lower().strip()
 use_reverseproxy = input("Do you want to install the reverse proxy with LetsEncrypt? (Y/N) : ")
 use_reverseproxy = use_reverseproxy.lower().strip()
 if use_reverseproxy == "y":
-    while reverseproxy_email == '':
+    while reverseproxy_email == 0:
         reverseproxy_email = input("Please enter email address to use for reverse proxy:  ")
         reverseproxy_email = reverseproxy_email.lower().strip()
     if use_portainer == "y":
@@ -96,6 +96,7 @@ try:
         print("Portainer should be available on port 9000 of this host after reboot")
     if use_portainer == 1 and portainer_domain != 0:
         print("Portainer should be available at https://{} after reboot is complete".format(portainer_domain))
+    print(64 * "-")
     subprocess_run("reboot")
 except Exception as e:
     print(e)
