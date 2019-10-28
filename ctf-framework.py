@@ -46,4 +46,6 @@ target_folder = startup_folder
 run = True
 while run:
     run = menu_select(target_folder)
+
 print("Exiting CTF-Framework")
+# Have a good day
