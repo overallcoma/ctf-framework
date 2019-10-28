@@ -11,10 +11,10 @@ def print_menu(menu_items):
         if len(menu_items) <= 0:
             print("-----No modules found-----")
             print("")
-        if len(menu_items) > 0:
-            choice = input("Enter your choice: [{}-{}] ".format("1", (len(menu_items) + 1)))
         print("{}. {}".format(list_count, 'Exit/Return'))
         print(64 * "-")
+        if len(menu_items) >= 0:
+            choice = input("Enter your choice: [{}-{}] ".format("1", (len(menu_items) + 1)))
 
         try:
             choice = int(choice)
