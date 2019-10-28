@@ -5,13 +5,13 @@ def print_menu(menu_items):
         list_count = 1
         choice = 0
         print(30 * "-", "MENU", 30 * "-")
+        for menu_item in menu_items:
+            print("{}. {}".format(list_count, menu_item.modulePrettyName))
+            list_count = list_count + 1
         if len(menu_items) > 0:
             choice = input("Enter your choice: [{}-{}] ".format("1", (len(menu_items) + 1)))
         else:
             print("-----No modules found-----")
-        for menu_item in menu_items:
-            print("{}. {}".format(list_count, menu_item.modulePrettyName))
-            list_count = list_count + 1
         print("{}. {}".format(list_count, 'Exit/Return'))
         print(64 * "-")
 
@@ -39,5 +39,5 @@ def print_menu(menu_items):
 
     while selection == 0:
         print_menu_internal(menu_items)
-    selection = int(selection) - 1
+    selection = selection - 1
     return selection
