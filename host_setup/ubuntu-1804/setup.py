@@ -92,10 +92,10 @@ try:
     print("")
     print("Rebooting host now - reconnect when reboot is complete")
     print("")
-    if use_portainer == 1:
-        print("Portainer should be available ")
-
-
+    if use_portainer == 1 and portainer_domain == 0:
+        print("Portainer should be available on port 9000 of this host after reboot")
+    if use_portainer == 1 and portainer_domain != 0:
+        print("Portainer should be available at https://{} after reboot is complete".format(portainer_domain))
     subprocess_run("reboot")
 except Exception as e:
     print(e)
