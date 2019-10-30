@@ -76,6 +76,6 @@ passhashgen_page_temp.close()
 # Environment variables are just for reference, not used in container
 flag_env_variable = "FLAG=" + flag
 password_env_variable = "PASSWORD=" + password
-containername = "basicweb-001 - " + str(password)
+containername = "basicweb-001_" + str(password)
 subprocess.call(["docker", "build", "-t", "ctff/basicweb-001", "."])
 subprocess.call(["docker", "run", "-d", "--name", containername, "-e", flag_env_variable, "-e", password_env_variable, "ctff/basicweb-001"])
