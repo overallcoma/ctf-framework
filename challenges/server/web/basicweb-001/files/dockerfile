@@ -14,7 +14,7 @@ COPY passhashgen.php /app/passhashgen.php
 COPY dbsetup.sql /db/dbsetup.sql
 
 RUN apt update -y
-RUN apt install sqlite3
+RUN apt install sqlite3 -y
 
 # This should leave file /app/hash.txt - delete that later
 RUN php /app/passhashgen.php var_password
