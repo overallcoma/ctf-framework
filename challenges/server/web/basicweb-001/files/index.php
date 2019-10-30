@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
       </form>
     </div>
   </body>
-  <!--Don't forget your password is {0}--!>
+  <!--Don't forget your password is $PASSWORD$--!>
 </html>
 <?php
 }else {
