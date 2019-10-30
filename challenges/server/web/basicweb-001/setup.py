@@ -6,11 +6,11 @@ import string
 
 flag = ''
 password = ''
-while flag == "":
+while flag == '':
     flag = input("Please enter the desired flag: ")
-while password == "":
+while password == '':
     print("Please enter the password that will be hidden")
-    input("Or enter \"random\" to generate a random flag: ")
+    password = input("Or enter \"random\" to generate a random flag: ")
 if password == "random":
     password = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
 
