@@ -23,7 +23,7 @@ COPY dbsetup.sql /db/dbsetup.sql
 
 RUN touch /db/password.db
 RUN chown www-data:www-data /db/password.db
-RUN sqlite3 /db/password.db /db/dbsetup.sql
+RUN sqlite3 /db/dbsetup.sql /db/dbsetup.sql
 
 #Add delete commands after testing
 
