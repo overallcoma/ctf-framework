@@ -22,7 +22,7 @@ RUN php /app/passhashgen.php var_password
 COPY dbsetup.sql /db/dbsetup.sql
 
 RUN touch /db/password.db
-RUN chown apache:apache /db/password.db
+RUN chown www-data:www-data /db/password.db
 RUN sqlite3 /db/password.db /db/dbsetup.sql
 
 #Add delete commands after testing
