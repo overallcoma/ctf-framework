@@ -10,7 +10,7 @@ while flag == '':
     flag = input("Please enter the desired flag: ")
 while password == '':
     print("Please enter the password that will be hidden")
-    password = input("Or enter \"random\" to generate a random flag: ")
+    password = input("Or enter \"random\" to generate a random password: ")
 if password == "random":
     password = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
 
@@ -37,7 +37,7 @@ index_page_data = index_page_data.replace("$FLAG$", flag)
 # passhashgen_page_data = passhashgen_page_data.replace("$PASSWORD$", password)
 
 # Open new files we will be writing
-dbsetup_page_temp = open("./dbsetup.sql")
+dbsetup_page_temp = open("./dbsetup.sql", "w+")
 dockerfile_temp = open("./dockerfile", "w+")
 error_page_temp = open("./errorpage.html", "w+")
 flag_page_temp = open("./flagpage.html", "w+")
