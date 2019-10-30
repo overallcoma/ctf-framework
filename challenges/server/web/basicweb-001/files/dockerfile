@@ -3,6 +3,8 @@ FROM php:apache
 ARG var_flagpage
 ARG var_password
 
+WORKDIR /app
+
 RUN mkdir -p /app/
 RUN mkdir -p /db/
 
@@ -24,6 +26,8 @@ COPY dbsetup.sql /db/dbsetup.sql
 RUN touch /db/password.db
 RUN chown www-data:www-data /db/password.db
 RUN sqlite3 /db/password.db < /db/dbsetup.sql
+
+RUN rm
 
 #Add delete commands after testing
 

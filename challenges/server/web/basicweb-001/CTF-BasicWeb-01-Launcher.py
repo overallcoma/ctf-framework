@@ -25,7 +25,7 @@ def write_database(dbfile_func, insert_password, insert_page):
         connection.close()
         connection = sqlite3.connect(dbfile_func, detect_types=sqlite3.PARSE_DECLTYPES)
         cursor = connection.cursor()
-        createtablestatement = 'CREATE TABLE IF NOT EXISTS passwords (record_number integer PRIMARY KEY AUTOINCREMENT, password text, pagename text)'
+        createtablestatement = 'CREATE TABLE [IF NOT EXISTS passwords (record_number integer PRIMARY KEY AUTOINCREMENT, password text, pagename text)'
         cursor.execute(createtablestatement)
         connection.commit()
         cursor.close()

@@ -39,11 +39,8 @@ index_page_data = open("./files/index.php", "r").read()
 passhashgen_page_data = open("./files/passhashgen.php", "r").read()
 
 # Replace variables in file data
-flag_page_data = flag_page_data.replace("$FLAG$", flag)
+flag_page_data = flag_page_data.replace("$PASSWORD$", password)
 index_page_data = index_page_data.replace("$FLAG$", flag)
-# dockerfile_data = dockerfile_data.replace("$FLAGPAGE$", flag_page_name)
-# dockerfile_data = dockerfile_data.replace("$PASSWORD$", password)
-# passhashgen_page_data = passhashgen_page_data.replace("$PASSWORD$", password)
 
 # Open new files we will be writing
 dbsetup_page_temp = open("./dbsetup.sql", "w+")
@@ -77,5 +74,11 @@ passhashgen_page_temp.close()
 flag_env_variable = "FLAG=" + flag
 password_env_variable = "PASSWORD=" + password
 containername = "basicweb-001_" + str(password)
+container_environment = []
+container_environment.append(flag_env_variable, password_env_variable)
+
+
+
+
 subprocess.call(["docker", "build", "-t", "ctff/basicweb-001", "."])
 subprocess.call(["docker", "run", "-d", "--name", containername, "-e", flag_env_variable, "-e", password_env_variable, "ctff/basicweb-001"])
