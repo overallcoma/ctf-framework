@@ -1,6 +1,7 @@
 import subprocess
 import platform
 import os
+import ctff_functions
 
 target_OS = "Ubuntu-18.04"
 
@@ -66,11 +67,22 @@ except Exception as e:
 if use_portainer == 1:
     try:
         print("Setting up Portainer")
-        subprocess_run("docker volume create portainer_data")
+        docker_client = ctff_functions.create_client()
+        docker_client.volumes.create("portainer")
+
+        portainer_name = "portainer"
+        portainer_restartpolicy = {"Name": "unless-stopped"}
+        portainer_ports = {"8000/tcp": 8000, "9000/tcp": 9000}
+        portainer_volumes = {"/var/run/docker.sock": {"bind": "/var/run/docker.sock", "mode": "rw"}, "portainer_data": {"bind": "/data", "mode": "rw"}}
+        portainer_image = "portainer"
+
         if portainer_domain == 0:
-            subprocess_run("docker run -d --restart=unless-stopped -p 8000:8000 -p 9000:9000 --name portainer -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer")
+            docker_client.containers.run(detach=True, name=portainer_name, restart_policy=portainer_restartpolicy, ports=portainer_ports, publish_all_ports=True, volumes=portainer_volumes, image=portainer_image)
+            # subprocess_run("docker run -d --restart=unless-stopped -p 8000:8000 -p 9000:9000 --name portainer -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer")
         elif portainer_domain != 0:
-            subprocess_run("docker run -d --restart=unless-stopped -p 8000:8000 -p 9000:9000 --name portainer -e VIRTUAL_HOST={} -e LETSENCRYPT_HOST={} -e LETSENCRYPT_EMAIL={}  -e VIRTUAL_PORT=9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer".format(portainer_domain, portainer_domain, reverseproxy_email))
+            portainer_envvars = {"VIRTUAL_HOST": portainer_domain, "LETSENCRYPT_HOST": portainer_domain, "LETSENCRYPT_EMAIL": reverseproxy_email, "VIRTUAL_PORT": "9000"}
+            docker_client.containers.run(detach=True, name=portainer_name, restart_policy=portainer_restartpolicy, ports=portainer_ports, volumes=portainer_volumes, environment=portainer_envvars, image=portainer_image)
+            # subprocess_run("docker run -d --restart=unless-stopped -p 8000:8000 -p 9000:9000 --name portainer -e VIRTUAL_HOST={} -e LETSENCRYPT_HOST={} -e LETSENCRYPT_EMAIL={}  -e VIRTUAL_PORT=9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer".format(portainer_domain, portainer_domain, reverseproxy_email))
     except Exception as e:
         print(e)
         print("Error setting up Portainer")
@@ -79,6 +91,14 @@ if use_portainer == 1:
 if use_reverseproxy == 1:
     try:
         print("Setting up the Reverse Proxy and LetsEncrypt Helper")
+        nginxproxy_name = "nginx-proxy"
+        nginxproxy_restartpolicy = {"Name": "unless-stopped"}
+        nginxproxy_ports = {"80/tcp": 80, "443/tcp": 443}
+        
+        nginxproxy_volumes = {"/etc/nginx/certs", {}}
+        nginxproxy_image
+
+
         subprocess_run("docker run --detach --restart=unless-stopped --name nginx-proxy --publish 80:80 --publish 443:443 --volume /etc/nginx/certs --volume /etc/nginx/vhost.d --volume /usr/share/nginx/html --volume /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy")
         subprocess_run("docker run --detach --restart=unless-stopped --name nginx-proxy-letsencrypt --volumes-from nginx-proxy --volume /var/run/docker.sock:/var/run/docker.sock:ro --env " + reverseproxy_email + " jrcs/letsencrypt-nginx-proxy-companion")
     except Exception as e:
