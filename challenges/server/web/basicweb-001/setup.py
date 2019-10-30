@@ -16,10 +16,19 @@ if password == "random":
 
 flag_page_name = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(64)]) + ".html"
 
-sql_commands = """
-DROP TABLE IF EXISTS passwords
-CREATE TABLE IF NOT EXISTS passwords (record_number integer PRIMARY KEY AUTOINCREMENT, passsword text, pagename text)
-INSERT INTO passwords(password,pagename) VALUES ('{}','{}')'""".format(password, flag_page_name)
+sql_build_script = """
+DROP TABLE IF EXISTS passwords;
+CREATE TABLE IF NOT EXISTS passwords (
+    record_number integer PRIMARY KEY AUTOINCREMENT,
+    passsword TEXT,
+    pagename TEXT
+);
+INSERT INTO passwords (
+    passsword, pagename
+    ) VALUES (
+        '{}','{}'
+        );
+""".format(password, flag_page_name)
 
 # Read in the page data
 dockerfile_data = open("./files/dockerfile", "r").read()
@@ -46,7 +55,7 @@ index_page_temp = open("./index.php", "w+")
 passhashgen_page_temp = open("./passhashgen.php", "w+")
 
 # Write the data to the target files
-dbsetup_page_temp.write(sql_commands)
+dbsetup_page_temp.write(sql_build_script)
 dockerfile_temp.write(dockerfile_data)
 error_page_temp.write(error_page_data)
 flag_page_temp.write(flag_page_data)
