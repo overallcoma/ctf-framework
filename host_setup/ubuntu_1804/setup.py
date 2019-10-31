@@ -87,7 +87,7 @@ if use_portainer == 1:
                 "mode": "rw"
             }
         }
-        portainer_image = "portainer"
+        portainer_image = "portainer/portainer"
 
         if portainer_domain == 0:
             docker_client.containers.run(
