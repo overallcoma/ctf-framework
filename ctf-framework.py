@@ -34,7 +34,8 @@ def menu_select(folder):
         if os.path.exists(setup_path):
             print(selected_path)
             # subprocess_command = 'python3 ' + setup_path + " " + setup_path
-            subprocess.run('python3', setup_path)
+            subprocess.call(['python3', setup_path])
+            # subprocess.run('python3', setup_path)
             # subprocess_run(subprocess_command)
     menu_select(folder)
     # If we haven't hit exit condition, we print the menu again
