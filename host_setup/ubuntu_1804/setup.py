@@ -7,7 +7,7 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("path", type=str)
 args = parser.parse_args()
-sys.path.apped(args.path)
+sys.path.append(args.path)
 import ctff_functions
 
 target_os = "Ubuntu-18.04"
