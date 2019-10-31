@@ -3,8 +3,8 @@ def run(sourcepath):
     import subprocess
     import platform
     import os
-    import ctff_functions
     import argparse
+    import ctff_functions
 
     parser = argparse.ArgumentParser()
     parser.add_argument("path", type=str)
