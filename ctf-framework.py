@@ -4,6 +4,7 @@ import ctff_functions
 
 ctff_dir = os.path.dirname(os.path.realpath(__file__))
 
+
 def subprocess_run(command):
     subprocess.run(command, shell=True)
 
@@ -19,10 +20,8 @@ def clear():
 
 def menu_select(folder):
     config_modules = ctff_functions.config_collect(folder)
-    # clear()
+    clear()
     selection = ctff_functions.print_menu(config_modules)
-    # This handles the exit selection - because the return is one number less than what user selects
-    # So if the selection matches the length of the modules array, that's an exit request
     if selection == len(config_modules):
         return False
     selected_module = config_modules[selection]
@@ -34,10 +33,7 @@ def menu_select(folder):
         setup_path = os.path.join(selected_path, "setup.py")
         if os.path.exists(setup_path):
             print(selected_path)
-            # subprocess_command = 'python3 ' + setup_path + " " + setup_path
             subprocess.call(['python3', setup_path, ctff_dir])
-            # subprocess.run('python3', setup_path)
-            # subprocess_run(subprocess_command)
     menu_select(folder)
     # If we haven't hit exit condition, we print the menu again
     return False

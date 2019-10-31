@@ -21,8 +21,10 @@ if not os.geteuid() == 0:
     print("This script must be run as root")
     exit(1)
 
+
 def subprocess_run(command):
     subprocess.run(command, shell=True, check=True)
+
 
 def yes_no_input(prompt_string):
     response_error = "Invalid Selection"
@@ -35,6 +37,7 @@ def yes_no_input(prompt_string):
         if response[0] == "n":
             return 0
     print(response_error)
+
 
 reverseproxy_email = 0
 portainer_domain = 0
@@ -70,6 +73,8 @@ except Exception as e:
 
 if use_portainer == 1:
     try:
+        print("")
+        print("")
         print("Setting up Portainer")
         docker_client = ctff_functions.create_client()
 
@@ -99,7 +104,6 @@ if use_portainer == 1:
                 volumes=portainer_volumes,
                 image=portainer_image
             )
-            # subprocess_run("docker run -d --restart=unless-stopped -p 8000:8000 -p 9000:9000 --name portainer -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer")
         elif portainer_domain != 0:
             portainer_envvars = {
                 "VIRTUAL_HOST": portainer_domain,
@@ -116,7 +120,6 @@ if use_portainer == 1:
                 environment=portainer_envvars,
                 image=portainer_image
             )
-            # subprocess_run("docker run -d --restart=unless-stopped -p 8000:8000 -p 9000:9000 --name portainer -e VIRTUAL_HOST={} -e LETSENCRYPT_HOST={} -e LETSENCRYPT_EMAIL={}  -e VIRTUAL_PORT=9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer".format(portainer_domain, portainer_domain, reverseproxy_email))
         docker_client.close()
     except Exception as e:
         print(e)
@@ -125,6 +128,8 @@ if use_portainer == 1:
 
 if use_reverseproxy == 1:
     try:
+        print("")
+        print("")
         print("Setting up the Reverse Proxy and LetsEncrypt Helper")
         docker_client = ctff_functions.create_client()
 
@@ -178,12 +183,7 @@ if use_reverseproxy == 1:
             volumes=nginxproxycompanion_volumes,
             image=nginxproxycompanion_image
         )
-
         docker_client.close()
-
-
-        # subprocess_run("docker run --detach --restart=unless-stopped --name nginx-proxy --publish 80:80 --publish 443:443 --volume /etc/nginx/certs --volume /etc/nginx/vhost.d --volume /usr/share/nginx/html --volume /var/run/docker.sock:/tmp/docker.sock:ro jwilder/nginx-proxy")
-        # subprocess_run("docker run --detach --restart=unless-stopped --name nginx-proxy-letsencrypt --volumes-from nginx-proxy --volume /var/run/docker.sock:/var/run/docker.sock:ro --env " + reverseproxy_email + " jrcs/letsencrypt-nginx-proxy-companion")
     except Exception as e:
         print(e)
         print("Error Setting up the Reverse Proxy and the LetsEncrypt Helper")
