@@ -1,10 +1,15 @@
 def run(sourcepath):
     import sys
-    sys.path.append(sourcepath)
     import subprocess
     import platform
     import os
     import ctff_functions
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path", type=str)
+    args = parser.parse_args()
+    sys.path.apped(args.path)
 
     target_os = "Ubuntu-18.04"
 
