@@ -2,6 +2,7 @@ import os
 import subprocess
 import ctff_functions
 
+ctff_dir = os.path.dirname(os.path.realpath(__file__))
 
 def subprocess_run(command):
     subprocess.run(command, shell=True)
@@ -34,7 +35,7 @@ def menu_select(folder):
         if os.path.exists(setup_path):
             print(selected_path)
             # subprocess_command = 'python3 ' + setup_path + " " + setup_path
-            subprocess.call(['python3', setup_path])
+            subprocess.call(['python3', setup_path, ctff_dir])
             # subprocess.run('python3', setup_path)
             # subprocess_run(subprocess_command)
     menu_select(folder)
