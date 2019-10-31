@@ -153,7 +153,7 @@ if use_reverseproxy == 1:
         docker_client.containers.run(
             detach=True,
             name=nginxproxy_name,
-            restartpolicy=nginxproxy_restartpolicy,
+            restart_policy=nginxproxy_restartpolicy,
             ports=nginxproxy_ports,
             volumes=nginxproxy_volumes,
             image=nginxproxy_image
@@ -173,7 +173,7 @@ if use_reverseproxy == 1:
         docker_client.containers.run(
             detach=True,
             name=nginxproxycompanion_name,
-            restartpolicy=nginxproxycompanion_restartpolicy,
+            restart_policy=nginxproxycompanion_restartpolicy,
             volumes_from=nginxproxycompanion_volumesfrom,
             volumes=nginxproxycompanion_volumes,
             image=nginxproxycompanion_image
