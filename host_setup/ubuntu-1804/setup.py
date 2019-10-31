@@ -135,10 +135,10 @@ if use_reverseproxy == 1:
             "nginx_certs": {
                 "bind": "/etc/nginx/certs",
                 "mode": "rw"},
-            "nginx_vhostd":{
+            "nginx_vhostd": {
                 "bind": "/etc/nginx/vhost.d",
                 "mode": "rw"},
-            "nginx_html":{
+            "nginx_html": {
                 "bind": "/usr/share/nginx/html",
                 "mode": "rw"},
             "/var/run/docker.sock": {
@@ -206,7 +206,7 @@ try:
     if use_portainer == 1 and isinstance(portainer_domain, str):
         print("Portainer should be available at https://{} after reboot is complete".format(portainer_domain))
         print("")
-    if use_portainer ==1:
+    if use_portainer == 1:
         print("-----PLEASE CONNECT TO PORTAINER AND SECURE IT AFTER REBOOT-----")
         print("")
     print(64 * "-")

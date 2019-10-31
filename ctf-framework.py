@@ -18,7 +18,7 @@ def clear():
 
 def menu_select(folder):
     config_modules = ctff_functions.config_collect(folder)
-    clear()
+    # clear()
     selection = ctff_functions.print_menu(config_modules)
     # This handles the exit selection - because the return is one number less than what user selects
     # So if the selection matches the length of the modules array, that's an exit request
