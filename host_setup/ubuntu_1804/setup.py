@@ -87,7 +87,7 @@ if use_portainer == 1:
                 "mode": "rw"
             }
         }
-        portainer_image = "portainer/portainer"
+        portainer_image = "portainer/portainer:latest"
 
         if portainer_domain == 0:
             docker_client.containers.run(
@@ -149,7 +149,7 @@ if use_reverseproxy == 1:
                 "bind": "/tmp/docker.sock",
                 "mode": "ro"}
             }
-        nginxproxy_image = "jwilder/nginx-proxy"
+        nginxproxy_image = "jwilder/nginx-proxy:latest"
         docker_client.containers.run(
             detach=True,
             name=nginxproxy_name,
@@ -169,7 +169,7 @@ if use_reverseproxy == 1:
         }
         nginxproxycompanion_envvars = {
             "LETSENCRYP_EMAIL": reverseproxy_email}
-        nginxproxycompanion_image = "jrcs/letsencrypt-nginx-proxy-companion"
+        nginxproxycompanion_image = "jrcs/letsencrypt-nginx-proxy-companion:latest"
         docker_client.containers.run(
             detach=True,
             name=nginxproxycompanion_name,
