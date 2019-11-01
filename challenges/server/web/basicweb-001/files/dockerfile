@@ -27,6 +27,8 @@ RUN touch /db/password.db
 RUN chown www-data:www-data /db/password.db
 RUN sqlite3 /db/password.db < /db/dbsetup.sql
 
+RUN ln -s /app/* /var/www/html/
+
 #Add delete commands after testing
 
 EXPOSE 80
