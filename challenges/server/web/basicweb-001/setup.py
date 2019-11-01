@@ -95,7 +95,7 @@ index_page_data = index_page_data.replace("$FLAG$", flag)
 
 # Open new files we will be writing
 # dbsetup_page_temp = open("./dbsetup.sql", "w+")
-dbsetup_page_temp = open(path_combine("dbsetup.sql", "w+"), "w+")
+dbsetup_page_temp = open(path_combine("dbsetup.sql"), "w+")
 # dockerfile_temp = open("./dockerfile", "w+")
 dockerfile_temp = open(path_combine("dockerfile"), "w+")
 # error_page_temp = open("./errorpage.html", "w+")
