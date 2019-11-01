@@ -52,16 +52,20 @@ if use_reverse_proxy == 0:
 flag = ''
 password = ''
 while flag == '':
+    print("")
     flag = input("Please enter the desired flag: ")
 while password == '':
+    print("")
     print("Please enter the password that will be hidden")
     password = input("Or enter \"random\" to generate a random password: ")
 if password == "random":
     password = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
-    print("You password is " + password)
 
+print("You password is " + password)
+print("")
 flag_page_name = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(64)]) + ".html"
 print("Your flag page name is " + flag_page_name)
+print("")
 
 sql_build_script = """
 DROP TABLE IF EXISTS passwords;
@@ -117,12 +121,6 @@ index_page_temp.close()
 passhashgen_page_temp.close()
 
 # Do all the work and create the container
-# Environment variables are just for reference, not used in container
-# flag_env_variable = "FLAG=" + flag
-# password_env_variable = "PASSWORD=" + password
-# containername = "basicweb-001_" + str(password)
-# container_environment = []
-# container_environment.append(flag_env_variable, password_env_variable)
 
 print("")
 print("")
@@ -170,5 +168,18 @@ elif use_reverse_proxy == 1:
     )
 docker_client.close()
 
-# subprocess.call(["docker", "build", "-t", "ctff/basicweb-001", "."])
-# subprocess.call(["docker", "run", "-d", "--name", containername, "-e", flag_env_variable, "-e", password_env_variable, "ctff/basicweb-001"])
+print("")
+print("")
+print(container_image + " has been deployed")
+print("")
+print("")
+print("Cleaning up Build Directory")
+os.remove(path_combine("dbsetup.sql"))
+os.remove(path_combine("dockerfile"))
+os.remove(path_combine("errorpage.html"))
+os.remove(path_combine("flagpage.html"))
+os.remove(path_combine("htaccess"))
+os.remove(path_combine("index.php"))
+os.remove(path_combine("passhashgen.php"))
+
+print("Returning to menu")
