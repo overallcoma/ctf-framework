@@ -76,17 +76,11 @@ INSERT INTO passwords (
 """.format(password, flag_page_name)
 
 # Read in the page data
-# dockerfile_data = open("./files/dockerfile", "r").read()
 dockerfile_data = open(path_combine("files/dockerfile"), "r").read()
-# error_page_data = open("./files/errorpage.html", "r").read()
 error_page_data = open(path_combine("files/errorpage.html"), "r").read()
-# flag_page_data = open("./files/flagpage.html", "r").read()
 flag_page_data = open(path_combine("files/flagpage.html"), "r").read()
-# htaccess_data = open("./files/htaccess", "r").read()
 htaccess_data = open(path_combine("files/htaccess"), "r").read()
-# index_page_data = open("./files/index.php", "r").read()
 index_page_data = open(path_combine("files/index.php"), "r").read()
-# passhashgen_page_data = open("./files/passhashgen.php", "r").read()
 passhashgen_page_data = open(path_combine("files/passhashgen.php"), "r").read()
 
 # Replace variables in file data
@@ -94,19 +88,12 @@ flag_page_data = flag_page_data.replace("$PASSWORD$", password)
 index_page_data = index_page_data.replace("$FLAG$", flag)
 
 # Open new files we will be writing
-# dbsetup_page_temp = open("./dbsetup.sql", "w+")
 dbsetup_page_temp = open(path_combine("dbsetup.sql"), "w+")
-# dockerfile_temp = open("./dockerfile", "w+")
 dockerfile_temp = open(path_combine("dockerfile"), "w+")
-# error_page_temp = open("./errorpage.html", "w+")
 error_page_temp = open(path_combine("errorpage.html"), "w+")
-#flag_page_temp = open("./flagpage.html", "w+")
 flag_page_temp = open(path_combine("flagpage.thml"), "w+")
-# htaccess_temp = open("./htaccess", "w+")
 htaccess_temp = open(path_combine("htaccess"), "w+")
-# index_page_temp = open("./index.php", "w+")
 index_page_temp = open(path_combine("index.php"), "w+")
-# passhashgen_page_temp = open("./passhashgen.php", "w+")
 passhashgen_page_temp = open(path_combine("passhashgen.php"), "w+")
 
 # Write the data to the target files
@@ -134,6 +121,10 @@ passhashgen_page_temp.close()
 # containername = "basicweb-001_" + str(password)
 # container_environment = []
 # container_environment.append(flag_env_variable, password_env_variable)
+
+print("")
+print("")
+print("content all generated, build phase start")
 
 container_name = "basicweb-001"
 container_restartpolicy = {"name": "unless-stopped"}
