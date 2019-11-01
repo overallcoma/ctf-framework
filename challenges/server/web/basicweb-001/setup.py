@@ -77,7 +77,7 @@ INSERT INTO passwords (
 
 # Read in the page data
 # dockerfile_data = open("./files/dockerfile", "r").read()
-dockerfile_data = open(path_combine("file/dockerfile"), "r").read()
+dockerfile_data = open(path_combine("files/dockerfile"), "r").read()
 # error_page_data = open("./files/errorpage.html", "r").read()
 error_page_data = open(path_combine("files/errorpage.html"), "r").read()
 # flag_page_data = open("./files/flagpage.html", "r").read()
