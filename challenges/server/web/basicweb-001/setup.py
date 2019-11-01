@@ -136,7 +136,7 @@ docker_client = ctff_functions.create_client()
 
 try:
     build_path = os.path.dirname(os.path.realpath(__file__))
-    docker_client.images.build(path=build_path, tag="ctff", quiet=False)
+    docker_client.images.build(path=build_path, tag="ctff", buildargs={"var_flagpage": flag_page_name, "var_password": password})
 except Exception as e:
     print(e)
     exit(1)
@@ -148,7 +148,6 @@ if use_reverse_proxy == 0:
         restart_policy=container_restartpolicy,
         ports=container_ports,
         publish_all_ports=True,
-        buildargs={"var_flagpage": flag_page_name, "var_password": password},
         image=container_image
     )
 elif use_reverse_proxy == 1:
@@ -162,7 +161,6 @@ elif use_reverse_proxy == 1:
         name=container_name,
         restart_policy=container_restartpolicy,
         environment=container_envvars,
-        buildargs={"var_flagpage": flag_page_name, "var_password": password},
         image=container_image
     )
 docker_client.close()
