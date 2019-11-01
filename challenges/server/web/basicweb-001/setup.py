@@ -92,8 +92,8 @@ index_page_data = open(path_combine("files/index.php"), "r").read()
 passhashgen_page_data = open(path_combine("files/passhashgen.php"), "r").read()
 
 # Replace variables in file data
-flag_page_data = flag_page_data.replace("$PASSWORD$", password)
-index_page_data = index_page_data.replace("$FLAG$", flag)
+flag_page_data = flag_page_data.replace("$FLAG$", flag)
+index_page_data = index_page_data.replace("$PASSWORD$", password)
 
 # Open new files we will be writing
 dbsetup_page_temp = open(path_combine("dbsetup.sql"), "w+")
