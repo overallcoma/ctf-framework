@@ -135,7 +135,8 @@ container_image = "ctff/basicweb001:latest"
 docker_client = ctff_functions.create_client()
 
 try:
-    docker_client.images.build(path=path_combine("dockerfile"), tag="ctff", rm=True, forcerm=True)
+    build_path = os.path.dirname(os.path.realpath(__file__))
+    docker_client.images.build(path=build_path, tag="ctff", rm=True, forcerm=True)
 except Exception as e:
     print(e)
     exit(1)
