@@ -91,7 +91,7 @@ index_page_data = index_page_data.replace("$FLAG$", flag)
 dbsetup_page_temp = open(path_combine("dbsetup.sql"), "w+")
 dockerfile_temp = open(path_combine("dockerfile"), "w+")
 error_page_temp = open(path_combine("errorpage.html"), "w+")
-flag_page_temp = open(path_combine("flagpage.thml"), "w+")
+flag_page_temp = open(path_combine("flagpage.html"), "w+")
 htaccess_temp = open(path_combine("htaccess"), "w+")
 index_page_temp = open(path_combine("index.php"), "w+")
 passhashgen_page_temp = open(path_combine("passhashgen.php"), "w+")
@@ -148,6 +148,7 @@ if use_reverse_proxy == 0:
         restart_policy=container_restartpolicy,
         ports=container_ports,
         publish_all_ports=True,
+        buildargs={"var_flagpage": flag_page_name, "var_password": password},
         image=container_image
     )
 elif use_reverse_proxy == 1:
@@ -161,6 +162,7 @@ elif use_reverse_proxy == 1:
         name=container_name,
         restart_policy=container_restartpolicy,
         environment=container_envvars,
+        buildargs={"var_flagpage": flag_page_name, "var_password": password},
         image=container_image
     )
 docker_client.close()
