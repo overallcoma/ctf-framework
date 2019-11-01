@@ -149,8 +149,7 @@ if use_reverse_proxy == 0:
         ports=container_ports,
         publish_all_ports=True,
         buildargs={"var_flagpage": flag_page_name, "var_password": password},
-        image=container_image,
-        quiet=False
+        image=container_image
     )
 elif use_reverse_proxy == 1:
     container_envvars = {
@@ -164,8 +163,7 @@ elif use_reverse_proxy == 1:
         restart_policy=container_restartpolicy,
         environment=container_envvars,
         buildargs={"var_flagpage": flag_page_name, "var_password": password},
-        image=container_image,
-        quiet=False
+        image=container_image
     )
 docker_client.close()
 
