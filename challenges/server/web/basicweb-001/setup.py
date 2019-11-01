@@ -25,7 +25,7 @@ def yes_no_input(prompt_string):
     print(response_error)
 
 
-rpcheck = ctff_functions.docker_rpcheck
+rpcheck = ctff_functions.docker_rpcheck.ctff_rp_check()
 use_reverse_proxy = 0
 container_domain = 0
 if rpcheck == 1:
