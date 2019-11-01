@@ -38,7 +38,7 @@ if rpcheck == 1:
     print("")
     print("You appear to have the nginx/letsencrypt proxy deployed")
     print("")
-    use_reverse_proxy = yes_no_input("Would you like to use the reverse proxy for this container? (Y/N): ")
+    use_reverse_proxy = yes_no_input("Would you like to use the reverse proxy for this container?")
     if use_reverse_proxy == 1:
         print("")
         container_domain = input("What domain name would you like this container to have?: ")
@@ -58,8 +58,10 @@ while password == '':
     password = input("Or enter \"random\" to generate a random password: ")
 if password == "random":
     password = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
+    print("You password is " + password)
 
 flag_page_name = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(64)]) + ".html"
+print("Your flag page name is " + flag_page_name)
 
 sql_build_script = """
 DROP TABLE IF EXISTS passwords;
@@ -136,7 +138,10 @@ docker_client = ctff_functions.create_client()
 
 try:
     build_path = os.path.dirname(os.path.realpath(__file__))
-    docker_client.images.build(path=build_path, tag="ctff", buildargs={"var_flagpage": flag_page_name, "var_password": password})
+    docker_client.images.build(path=build_path, tag="ctff", buildargs={
+        "var_flagpage": flag_page_name,
+        "var_password": password
+    })
 except Exception as e:
     print(e)
     exit(1)
