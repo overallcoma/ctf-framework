@@ -20,7 +20,7 @@ def clear():
 
 def menu_select(folder):
     config_modules = ctff_functions.config_collect(folder)
-    clear()
+    # clear()
     selection = ctff_functions.print_menu(config_modules)
     if selection == len(config_modules):
         return False
