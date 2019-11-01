@@ -61,6 +61,8 @@ while password == '':
 if password == "random":
     password = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
 
+print("")
+print("")
 print("You password is " + password)
 print("")
 flag_page_name = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(64)]) + ".html"
@@ -124,7 +126,7 @@ passhashgen_page_temp.close()
 
 print("")
 print("")
-print("content all generated, build phase start")
+print("Content generated, build phase start")
 
 container_name = "basicweb-001"
 container_restartpolicy = {"name": "unless-stopped"}
