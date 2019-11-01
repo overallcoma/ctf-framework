@@ -4,6 +4,7 @@ import sys
 import subprocess
 import random
 import string
+import os
 
 parser = argparse.ArgumentParser()
 parser.add_argument("path", type=str)
@@ -23,6 +24,11 @@ def yes_no_input(prompt_string):
         if response[0] == "n":
             return 0
     print(response_error)
+
+
+def path_combine(subdir):
+    current_path = os.path.dirname(os.path.realpath(__file__))
+    return os.path.join(current_path, subdir)
 
 
 rpcheck = ctff_functions.docker_rpcheck.ctff_rp_check()
@@ -70,7 +76,11 @@ INSERT INTO passwords (
 """.format(password, flag_page_name)
 
 # Read in the page data
-dockerfile_data = open("./files/dockerfile", "r").read()
+print(os.path.dirname(os.path.realpath(__file__)))
+# dockerfile_data = open("./files/dockerfile", "r").read()
+dockerfile_data = open(path_combine("file/dockerfile"))
+print(dockerfile_data)
+
 error_page_data = open("./files/errorpage.html", "r").read()
 flag_page_data = open("./files/flagpage.html", "r").read()
 htaccess_data = open("./files/htaccess", "r").read()
