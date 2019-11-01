@@ -138,7 +138,7 @@ docker_client = ctff_functions.create_client()
 
 try:
     build_path = os.path.dirname(os.path.realpath(__file__))
-    docker_client.images.build(path=build_path, tag=container_image, buildargs={
+    docker_client.images.build(path=build_path, tag=container_image, rm=True, forcerm=True, buildargs={
         "var_flagpage": flag_page_name,
         "var_password": password
     })
