@@ -2,7 +2,7 @@ import docker
 import ctff_functions
 
 
-def ctff_rp_check(client):
+def ctff_rp_check():
     client = ctff_functions.create_client()
     nginx_rp_check = 0
     nginx_rp_letsencrypt_check = 0
@@ -20,4 +20,5 @@ def ctff_rp_check(client):
         ctff_rp_deployed = 1
     else:
         ctff_rp_deployed = 0
+    client.close()
     return ctff_rp_deployed

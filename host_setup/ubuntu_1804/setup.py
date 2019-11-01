@@ -46,10 +46,12 @@ use_portainer = yes_no_input("Do you want to install Portainer?")
 use_reverseproxy = yes_no_input("Do you want to install the reverse proxy with LetsEncrypt?")
 if use_reverseproxy == 1:
     while reverseproxy_email == 0:
+        print("")
         reverseproxy_email = input("Please enter email address to use for reverse proxy:  ")
         reverseproxy_email = reverseproxy_email.lower().strip()
     if use_portainer == 1:
         while portainer_domain == 0:
+            print("")
             portainer_domain = input("What domain name would you like to use for portainer? : ")
             portainer_domain = portainer_domain.lower().strip()
             if portainer_domain == "":

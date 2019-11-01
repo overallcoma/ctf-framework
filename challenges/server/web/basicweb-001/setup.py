@@ -1,8 +1,47 @@
+import docker
+import argparse
+import sys
 import subprocess
-from subprocess import call
-from os import remove
 import random
 import string
+
+parser = argparse.ArgumentParser()
+parser.add_argument("path", type=str)
+args = parser.parse_args()
+sys.path.append(args.path)
+import ctff_functions
+
+
+def yes_no_input(prompt_string):
+    response_error = "Invalid Selection"
+    while response_error == "Invalid Selection":
+        prompt_string_yn = prompt_string + " (Y/N):"
+        response = input(prompt_string_yn)
+        response = response.lower().strip()
+        if response[0] == "y":
+            return 1
+        if response[0] == "n":
+            return 0
+    print(response_error)
+
+
+rpcheck = ctff_functions.docker_rpcheck
+use_reverse_proxy = 0
+container_domain = 0
+if rpcheck == 1:
+    print("")
+    print("You appear to have the nginx/letsencrypt proxy deployed")
+    print("")
+    use_reverse_proxy = yes_no_input("Would you like to use the reverse proxy for this container? (Y/N): ")
+    if use_reverse_proxy == 1:
+        print("")
+        container_domain = input("What domain name would you like this container to have?: ")
+        print("")
+        container_rp_email = input("What email address would you like to use for the certificate?: ")
+
+if use_reverse_proxy == 0:
+    print("")
+    container_port = input("What port number would you like this container published on?: ")
 
 flag = ''
 password = ''
@@ -71,14 +110,49 @@ passhashgen_page_temp.close()
 
 # Do all the work and create the container
 # Environment variables are just for reference, not used in container
-flag_env_variable = "FLAG=" + flag
-password_env_variable = "PASSWORD=" + password
-containername = "basicweb-001_" + str(password)
-container_environment = []
-container_environment.append(flag_env_variable, password_env_variable)
+# flag_env_variable = "FLAG=" + flag
+# password_env_variable = "PASSWORD=" + password
+# containername = "basicweb-001_" + str(password)
+# container_environment = []
+# container_environment.append(flag_env_variable, password_env_variable)
 
+container_name = "basicweb-001"
+container_restartpolicy = {"name": "unless-stopped"}
+if use_reverse_proxy == 0:
+    container_ports = {"80/tcp": "{}".format(container_port)}
+container_image = "ctff/basicweb001:latest"
 
+docker_client = ctff_functions.create_client()
 
+try:
+    docker_client.images.build(path=".", tag="ctff", rm=True, forcerm=True)
+except Exception as e:
+    print(e)
+    exit(1)
 
-subprocess.call(["docker", "build", "-t", "ctff/basicweb-001", "."])
-subprocess.call(["docker", "run", "-d", "--name", containername, "-e", flag_env_variable, "-e", password_env_variable, "ctff/basicweb-001"])
+if use_reverse_proxy == 0:
+    docker_client.containers.run(
+        detach=True,
+        name=container_name,
+        restart_policy=container_restartpolicy,
+        ports=container_ports,
+        publish_all_ports=True,
+        image=container_image
+    )
+elif use_reverse_proxy == 1:
+    container_envvars = {
+        "VIRTUAL_HOST": container_domain,
+        "LETSENCRYPT_HOST": container_domain,
+        "LETSENCRYPT_EMAIL": container_rp_email
+    }
+    docker_client.containers.run(
+        detach=True,
+        name=container_name,
+        restart_policy=container_restartpolicy,
+        environment=container_envvars,
+        image=container_image
+    )
+docker_client.close()
+
+# subprocess.call(["docker", "build", "-t", "ctff/basicweb-001", "."])
+# subprocess.call(["docker", "run", "-d", "--name", containername, "-e", flag_env_variable, "-e", password_env_variable, "ctff/basicweb-001"])
