@@ -28,7 +28,7 @@ RUN /bin/bash /db/passinsert.sh $HASHPASS
 
 # RUN SQLBUILD=$(</app/dbsetup.sql)
 # RUN /bin/bash -c "echo ${SQLBUILD[@]/HASHPASSREPLACE/${HASHPASS}} > /db/dbsetup.sql"
-# RUN sqlite3 /db/password.db < /db/dbsetup.sql
+RUN sqlite3 /db/password.db < /db/dbsetup.sql
 
 # RUN sql1="CREATE TABLE IF NOT EXISTS passwords \(record_number integer PRIMARY KEY AUTOINCREMENT,passsword TEXT,pagename TEXT\);"
 # RUN sql2="INSERT INTO passwords \(passsword,pagename\) VALUES \('${hashpass}','${var_flagpage}'\);"
