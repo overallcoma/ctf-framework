@@ -20,6 +20,8 @@ RUN apt install sqlite3 -y
 
 # This should leave file /app/hash.txt - delete that later
 RUN php /app/passhashgen.php var_password
+RUN touch /db/password.db
+RUN chown www-data:www-data /db/password.db
 RUN hashpass=$(</app/hash.txt)
 RUN sql1="CREATE TABLE IF NOT EXISTS passwords \(record_number integer PRIMARY KEY AUTOINCREMENT,passsword TEXT,pagename TEXT\);"
 RUN sql2="INSERT INTO passwords \(passsword, pagename\) VALUES \('${hashpass}','${var_flagpage}'\);"
@@ -32,7 +34,7 @@ RUN sqlite3 /db/password.db ${sql2}
 # COPY dbsetup.sql /db/dbsetup.sql
 
 # RUN touch /db/password.db
-RUN chown www-data:www-data /db/password.db
+# RUN chown www-data:www-data /db/password.db
 # RUN sqlite3 /db/password.db < /db/dbsetup.sql
 
 RUN ln -s /app/* /var/www/html/
