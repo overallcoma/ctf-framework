@@ -22,12 +22,11 @@ RUN touch /db/password.db
 RUN chown www-data:www-data /db/password.db
 RUN hashpass=$(</app/hash.txt)
 
-ENV sql1="CREATE TABLE IF NOT EXISTS passwords \(record_number integer PRIMARY KEY AUTOINCREMENT,passsword TEXT,pagename TEXT\);"
-ENV sql2="INSERT INTO passwords \(passsword,pagename\) VALUES \('${hashpass}','${var_flagpage}'\);"
+RUN sql1="CREATE TABLE IF NOT EXISTS passwords \(record_number integer PRIMARY KEY AUTOINCREMENT,passsword TEXT,pagename TEXT\);"
+RUN sql2="INSERT INTO passwords \(passsword,pagename\) VALUES \('${hashpass}','${var_flagpage}'\);"
 
-
-RUN 'sql1=CREATE TABLE IF NOT EXISTS passwords (record_number integer PRIMARY KEY AUTOINCREMENT,passsword TEXT,pagename TEXT);'
-RUN 'sql2=INSERT INTO passwords (passsword,pagename) VALUES ('${hashpass}','${var_flagpage}');'
+RUN sql1=CREATE TABLE IF NOT EXISTS passwords (record_number integer PRIMARY KEY AUTOINCREMENT,passsword TEXT,pagename TEXT);
+RUN sql2=INSERT INTO passwords (passsword,pagename) VALUES ('${hashpass}','${var_flagpage}');
 RUN sqlite3 /db/password.db ${sql1}
 RUN sqlite3 /db/password.db ${sql2}
 
