@@ -29,17 +29,6 @@ CMD sql2="\""INSERT\ INTO\ passwords\ \(passsword,pagename\)\ VALUES\ \('${hashp
 CMD sqlite3 /db/password.db ${sql1}
 CMD sqlite3 /db/password.db ${sql2}
 
-# RUN sqlite3 /db/password.db "CREATE TABLE IF NOT EXISTS passwords (record_number integer PRIMARY KEY AUTOINCREMENT,passsword TEXT,pagename TEXT);"
-
-# dbsetup.sql should be present after the setup script generates it
-# COPY dbsetup.sql /db/dbsetup.sql
-
-# RUN touch /db/password.db
-# RUN chown www-data:www-data /db/password.db
-# RUN sqlite3 /db/password.db < /db/dbsetup.sql
-
 RUN ln -s /app/* /var/www/html/
-
-# Add delete commands after testing
 
 EXPOSE 80
