@@ -20,6 +20,7 @@ RUN apt update -y
 RUN apt install sqlite3 -y
 
 RUN echo $var_password > /var/www/html/password.txt
+RUN echo /var/www/html/password.txt
 RUN php /var/www/html/passhashgen.php
 RUN touch /db/password.db
 # RUN chown www-data:www-data /db/password.db
