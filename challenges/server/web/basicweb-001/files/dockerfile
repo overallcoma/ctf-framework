@@ -5,8 +5,8 @@ ARG var_password
 
 WORKDIR /app
 
-CMD mkdir -p /app/
-CMD mkdir -p /db/
+RUN mkdir -p /app/
+RUN mkdir -p /db/
 
 COPY errorpage.html /app/errorpage.html
 COPY flagpage.html /app/${var_flagpage}
@@ -15,19 +15,19 @@ COPY index.php /app/index.php
 COPY passhashgen.php /app/passhashgen.php
 # COPY dbsetup.sql /db/dbsetup.sql
 
-CMD apt update -y
-CMD apt install sqlite3 -y
+RUN apt update -y
+RUN apt install sqlite3 -y
 
 # This should leave file /app/hash.txt - delete that later
-CMD php /app/passhashgen.php var_password
-CMD touch /db/password.db
-CMD chown www-data:www-data /db/password.db
-CMD hashpass=$(</app/hash.txt)
+RUN php /app/passhashgen.php var_password
+RUN touch /db/password.db
+RUN chown www-data:www-data /db/password.db
+RUN hashpass=$(</app/hash.txt)
 
-CMD sql1="\""CREATE\ TABLE\ IF\ NOT\ EXISTS\ passwords\ \(record_number\ integer\ PRIMARY KEY\ AUTOINCREMENT,passsword\ TEXT,pagename\ TEXT\);"\""
-CMD sql2="\""INSERT\ INTO\ passwords\ \(passsword,pagename\)\ VALUES\ \('${hashpass}','${var_flagpage}'\);"
-CMD sqlite3 /db/password.db ${sql1}
-CMD sqlite3 /db/password.db ${sql2}
+RUN sql1="\""CREATE\ TABLE\ IF\ NOT\ EXISTS\ passwords\ \(record_number\ integer\ PRIMARY KEY\ AUTOINCREMENT,passsword\ TEXT,pagename\ TEXT\);"\""
+RUN sql2="\""INSERT\ INTO\ passwords\ \(passsword,pagename\)\ VALUES\ \('${hashpass}','${var_flagpage}'\);"
+RUN sqlite3 /db/password.db ${sql1}
+RUN sqlite3 /db/password.db ${sql2}
 
 RUN ln -s /app/* /var/www/html/
 
