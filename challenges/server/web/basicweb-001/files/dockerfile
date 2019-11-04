@@ -26,7 +26,7 @@ RUN touch /db/password.db
 # RUN chown www-data:www-data /db/password.db
 # RUN HASHPASS=$(</app/hash.txt)
 RUN chmod +x /db/passinsert.sh
-RUN /bin/bash /db/passinsert.sh
+RUN /bin/bash -c /db/passinsert.sh
 
 # RUN SQLBUILD=$(</app/dbsetup.sql)
 # RUN /bin/bash -c "echo ${SQLBUILD[@]/HASHPASSREPLACE/${HASHPASS}} > /db/dbsetup.sql"
