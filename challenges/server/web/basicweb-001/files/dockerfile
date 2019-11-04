@@ -23,7 +23,7 @@ RUN php /app/passhashgen.php var_password
 # RUN chown www-data:www-data /db/password.db
 RUN HASHPASS=$(</app/hash.txt)
 RUN SQLBUILD=$(</app/dbsetup.sql)
-RUN echo ${SQLBUILD[@]/HASHPASSREPLACE/${HASHPASS}} > /db/dbsetup.sql
+RUN /bin/bash -c "echo ${SQLBUILD[@]/HASHPASSREPLACE/${HASHPASS}} > /db/dbsetup.sql"
 RUN sqlite3 /db/password.db < /db/dbsetup.sql
 
 # RUN sql1="CREATE TABLE IF NOT EXISTS passwords \(record_number integer PRIMARY KEY AUTOINCREMENT,passsword TEXT,pagename TEXT\);"
