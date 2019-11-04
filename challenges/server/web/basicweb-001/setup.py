@@ -75,7 +75,7 @@ sql_build_script = """
 DROP TABLE IF EXISTS passwords;
 CREATE TABLE IF NOT EXISTS passwords (
     record_number integer PRIMARY KEY AUTOINCREMENT,
-    passsword TEXT,
+    password TEXT,
     pagename TEXT
 );
 INSERT INTO passwords (
