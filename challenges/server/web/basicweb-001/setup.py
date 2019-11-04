@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS passwords (
     pagename TEXT
 );
 INSERT INTO passwords (
-    passsword, pagename
+    password, pagename
     ) VALUES (
         '{}','{}'
         );
