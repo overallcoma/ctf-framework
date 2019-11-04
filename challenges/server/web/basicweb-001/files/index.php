@@ -28,8 +28,10 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
   $db = new SQLite3("/db/password.db");
   $result = $db->querySingle("SELECT * FROM passwords WHERE record_number = 1", true);
   $dest_page = "error.html";
+  $checkpass = $result["password"];
   if (password_verify($password, $checkpass)) {
     $dest_page = $result["pagename"];
+    }
+  header("location: $dest_page");
   }
-  header("location: $dest_page")
 ?>
