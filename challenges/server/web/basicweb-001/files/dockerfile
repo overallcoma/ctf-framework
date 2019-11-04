@@ -13,7 +13,8 @@ COPY flagpage.html /app/${var_flagpage}
 COPY htaccess /app/.htaccess
 COPY index.php /app/index.php
 COPY passhashgen.php /app/passhashgen.php
-COPY dbsetup.sql /app/dbsetup.sql
+COPY dbsetup.sql /db/dbsetup.sql
+COPY files/passinsert.sh /db/passinsert.sh
 
 RUN apt update -y
 RUN apt install sqlite3 -y
@@ -22,8 +23,11 @@ RUN php /app/passhashgen.php var_password
 # RUN touch /db/password.db
 # RUN chown www-data:www-data /db/password.db
 RUN HASHPASS=$(</app/hash.txt)
-RUN SQLBUILD=$(</app/dbsetup.sql)
-RUN /bin/bash -c "echo ${SQLBUILD[@]/HASHPASSREPLACE/${HASHPASS}} > /db/dbsetup.sql"
+RUN chmod +x /db/passinsert.sh
+RUN /bin/bash /db/passinsert.sh
+
+# RUN SQLBUILD=$(</app/dbsetup.sql)
+# RUN /bin/bash -c "echo ${SQLBUILD[@]/HASHPASSREPLACE/${HASHPASS}} > /db/dbsetup.sql"
 RUN sqlite3 /db/password.db < /db/dbsetup.sql
 
 # RUN sql1="CREATE TABLE IF NOT EXISTS passwords \(record_number integer PRIMARY KEY AUTOINCREMENT,passsword TEXT,pagename TEXT\);"
