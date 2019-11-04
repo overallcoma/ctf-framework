@@ -19,8 +19,8 @@ COPY files/passinsert.sh /db/passinsert.sh
 RUN apt update -y
 RUN apt install sqlite3 -y
 
-RUN php /var/www/html/passhashgen.php ${var_password}
-# RUN echo var_password > /var/www/html/password.txt
+RUN echo $var_password > /var/www/html/password.txt
+RUN php /var/www/html/passhashgen.php $var_password
 # RUN touch /db/password.db
 # RUN chown www-data:www-data /db/password.db
 # RUN HASHPASS=$(</app/hash.txt)
