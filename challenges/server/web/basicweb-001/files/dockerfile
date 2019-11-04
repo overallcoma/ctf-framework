@@ -24,7 +24,7 @@ RUN php /app/passhashgen.php var_password
 # RUN chown www-data:www-data /db/password.db
 RUN HASHPASS=$(</app/hash.txt)
 RUN chmod +x /db/passinsert.sh
-RUN /bin/bash /db/passinsert.sh
+RUN /bin/bash /db/passinsert.sh $HASHPASS
 
 # RUN SQLBUILD=$(</app/dbsetup.sql)
 # RUN /bin/bash -c "echo ${SQLBUILD[@]/HASHPASSREPLACE/${HASHPASS}} > /db/dbsetup.sql"
