@@ -8,18 +8,18 @@ WORKDIR /app
 RUN mkdir -p /app/
 RUN mkdir -p /db/
 
-COPY errorpage.html /app/errorpage.html
-COPY flagpage.html /app/${var_flagpage}
-COPY htaccess /app/.htaccess
-COPY index.php /app/index.php
-COPY passhashgen.php /app/passhashgen.php
+COPY errorpage.html /var/www/html/error.html
+COPY flagpage.html /var/www/html/${var_flagpage}
+COPY htaccess /var/www/html/.htaccess
+COPY index.php /var/www/html/index.php
+COPY passhashgen.php /var/www/html/passhashgen.php
 COPY dbsetup.sql /db/dbsetup.sql
 COPY files/passinsert.sh /db/passinsert.sh
 
 RUN apt update -y
 RUN apt install sqlite3 -y
 
-RUN php /app/passhashgen.php var_password
+RUN php /var/www/html/passhashgen.php var_password
 # RUN touch /db/password.db
 # RUN chown www-data:www-data /db/password.db
 # RUN HASHPASS=$(</app/hash.txt)
@@ -28,7 +28,7 @@ RUN /bin/bash /db/passinsert.sh $HASHPASS
 
 # RUN SQLBUILD=$(</app/dbsetup.sql)
 # RUN /bin/bash -c "echo ${SQLBUILD[@]/HASHPASSREPLACE/${HASHPASS}} > /db/dbsetup.sql"
-RUN sqlite3 /db/password.db < /db/dbsetup.sql
+# RUN sqlite3 /db/password.db < /db/dbsetup.sql
 
 # RUN sql1="CREATE TABLE IF NOT EXISTS passwords \(record_number integer PRIMARY KEY AUTOINCREMENT,passsword TEXT,pagename TEXT\);"
 # RUN sql2="INSERT INTO passwords \(passsword,pagename\) VALUES \('${hashpass}','${var_flagpage}'\);"
@@ -36,6 +36,6 @@ RUN sqlite3 /db/password.db < /db/dbsetup.sql
 # RUN sqlite3 /db/password.db ${sql1}
 # RUN sqlite3 /db/password.db ${sql2}
 
-RUN ln -s /app/* /var/www/html/
+# RUN ln -s /app/* /var/www/html/
 
 EXPOSE 80
