@@ -61,7 +61,7 @@ while password == '':
 if password == "random":
     password = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
 
-hashpass = 'HASHPASSREPLACE'
+hashpassvar = 'HASHPASSREPLACE'
 
 print("")
 print("")
