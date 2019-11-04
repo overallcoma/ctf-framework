@@ -3,9 +3,9 @@ FROM php:apache
 ARG var_flagpage
 ARG var_password
 
-WORKDIR /app
+WORKDIR /var/www/html
 
-RUN mkdir -p /app/
+# RUN mkdir -p /app/
 RUN mkdir -p /db/
 
 COPY errorpage.html /var/www/html/error.html
