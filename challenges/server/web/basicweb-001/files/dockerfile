@@ -5,7 +5,6 @@ ARG var_password
 
 WORKDIR /var/www/html
 
-# RUN mkdir -p /app/
 RUN mkdir -p /db/
 
 COPY errorpage.html /var/www/html/error.html
@@ -20,24 +19,10 @@ RUN apt update -y
 RUN apt install sqlite3 -y
 
 RUN echo $var_password > /var/www/html/password.txt
-RUN echo /var/www/html/password.txt
 RUN php /var/www/html/passhashgen.php
 RUN touch /db/password.db
-# RUN chown www-data:www-data /db/password.db
-# RUN HASHPASS=$(</app/hash.txt)
 RUN chmod +x /db/passinsert.sh
 RUN /bin/bash -c /db/passinsert.sh
-
-# RUN SQLBUILD=$(</app/dbsetup.sql)
-# RUN /bin/bash -c "echo ${SQLBUILD[@]/HASHPASSREPLACE/${HASHPASS}} > /db/dbsetup.sql"
 RUN sqlite3 /db/password.db < /db/dbsetup.sql
-
-# RUN sql1="CREATE TABLE IF NOT EXISTS passwords \(record_number integer PRIMARY KEY AUTOINCREMENT,passsword TEXT,pagename TEXT\);"
-# RUN sql2="INSERT INTO passwords \(passsword,pagename\) VALUES \('${hashpass}','${var_flagpage}'\);"
-
-# RUN sqlite3 /db/password.db ${sql1}
-# RUN sqlite3 /db/password.db ${sql2}
-
-# RUN ln -s /app/* /var/www/html/
 
 EXPOSE 80
