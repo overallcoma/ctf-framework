@@ -25,15 +25,11 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
 <?php
 }else {
   $password = $_POST["password"];
-  $hashedpassword = password_hash($password, PASSWORD_DEFAULT);
-  $pdo = new PDO("sqlite:/db/password.db");
-  $sql_return = $pdo->query("SELECT * FROM passwords WHERE record_number = 1");
-  $sql_return = $sql_return->fetch();
-  $goodorbad = password_verify($password, $sql_return["password"]);
+  $db = new SQLite3("/db/password.db");
+  $result = $db->querySingle("SELECT * FROM passwords WHERE record_number = 1", true);
   $dest_page = "error.html";
-  if($goodorbad){
-    $dest_page = $sql_return["pagename"];
+  if (password_verify($password, $checkpass)) {
+    $dest_page = $result["pagename"];
   }
-  header("location: $dest_page");
-}
+  header("location: $dest_page")
 ?>
