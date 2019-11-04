@@ -61,7 +61,7 @@ while password == '':
 if password == "random":
     password = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
 
-hashpass = '${hashpass}'
+hashpass = 'HASHPASSREPLACE'
 
 print("")
 print("")
@@ -83,7 +83,7 @@ INSERT INTO passwords (
     ) VALUES (
         '{}','{}'
         );
-""".format(hashpass, flag_page_name)
+""".format(hashpassvar, flag_page_name)
 
 # Read in the page data
 dockerfile_data = open(path_combine("files/dockerfile"), "r").read()
