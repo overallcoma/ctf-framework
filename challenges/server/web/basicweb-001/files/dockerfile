@@ -19,8 +19,8 @@ RUN apt update -y
 RUN apt install sqlite3 -y
 
 RUN php /app/passhashgen.php var_password
-RUN touch /db/password.db
-RUN chown www-data:www-data /db/password.db
+# RUN touch /db/password.db
+# RUN chown www-data:www-data /db/password.db
 RUN HASHPASS=$(</app/hash.txt)
 RUN SQLBUILD=$(</app/dbsetup.sql)
 RUN echo ${SQLBUILD[@]/HASHPASSREPLACE/${HASHPASS}} > /db/dbsetup.sql
