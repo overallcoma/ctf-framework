@@ -22,6 +22,7 @@ RUN php /app/passhashgen.php var_password
 RUN touch /db/password.db
 RUN chown www-data:www-data /db/password.db
 RUN HASHPASS=$(</app/hash.txt)
+RUN echo ${HAHSPASS}
 RUN sed "/s/HASHPASSREPLACE/${hashpass}/g" /app/dbsetup.sql
 RUN sqlite3 /db/password.db < /app/dbsetup.sql
 
