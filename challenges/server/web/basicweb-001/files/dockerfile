@@ -22,7 +22,7 @@ RUN apt install sqlite3 -y
 RUN php /app/passhashgen.php var_password
 # RUN touch /db/password.db
 # RUN chown www-data:www-data /db/password.db
-RUN HASHPASS=$(</app/hash.txt)
+# RUN HASHPASS=$(</app/hash.txt)
 RUN chmod +x /db/passinsert.sh
 RUN /bin/bash /db/passinsert.sh $HASHPASS
 

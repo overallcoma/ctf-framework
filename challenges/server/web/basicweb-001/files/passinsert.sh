@@ -1,3 +1,3 @@
 #!/bin/bash
-HASHPASS=$1
+HASHPASS=$(</app/hash.txt)
 sed -i "s/HASHPASSREPLACE/${HASHPASS}/g" /db/dbsetup.sql
