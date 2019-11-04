@@ -13,7 +13,7 @@ COPY flagpage.html /app/${var_flagpage}
 COPY htaccess /app/.htaccess
 COPY index.php /app/index.php
 COPY passhashgen.php /app/passhashgen.php
-COPY dbsetup.py /app/dbsetup.sql
+COPY dbsetup.sql /app/dbsetup.sql
 
 RUN apt update -y
 RUN apt install sqlite3 -y
