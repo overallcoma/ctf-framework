@@ -12,17 +12,24 @@ COPY flagpage.html /var/www/html/${var_flagpage}
 COPY htaccess /var/www/html/.htaccess
 COPY index.php /var/www/html/index.php
 COPY passhashgen.php /var/www/html/passhashgen.php
-COPY dbsetup.sql /db/dbsetup.sql
-COPY files/passinsert.sh /db/passinsert.sh
+# COPY dbsetup.sql /db/dbsetup.sql
+COPY files/dbconfig.sh /db/dbconfig.sh
 
 RUN apt update -y
 RUN apt install sqlite3 -y
 
 RUN echo $var_password > /var/www/html/password.txt
+RUN echo $var_flagpage > /var/www/html/flagpage.txt
 RUN php /var/www/html/passhashgen.php
 RUN touch /db/password.db
 RUN chmod +x /db/passinsert.sh
 RUN /bin/bash -c /db/passinsert.sh
-RUN sqlite3 /db/password.db < /db/dbsetup.sql
+# RUN sqlite3 /db/password.db < /db/dbsetup.sql
+
+RUN rm /var/www/html/passhashgen.php
+RUN rm /var/www/html/hash.txt
+RUN rm /var/www/html/password.txt
+RUN rm /var/www/html/flagpage.txt
+RUN rm /db/dbconfig.sh
 
 EXPOSE 80
