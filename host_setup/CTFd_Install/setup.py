@@ -112,4 +112,4 @@ ctfd_replacement_yaml.close()
 
 docker_client.close()
 
-subprocess_run(["docker-compose", "-f", ctfd_volume_data_path, "up"])
+subprocess_run(["docker-compose", "-f", ctfd_volume_data_path, "up", "-d"])
