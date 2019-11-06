@@ -3,7 +3,9 @@ import sys
 import random
 import string
 import os
+import time
 
+# This is here to import the functions from ctff
 parser = argparse.ArgumentParser()
 parser.add_argument("path", type=str)
 args = parser.parse_args()
@@ -29,6 +31,7 @@ def path_combine(subdir):
     return os.path.join(current_path, subdir)
 
 
+# Check if the reverse proxy setup is deployed
 rpcheck = ctff_functions.docker_rpcheck.ctff_rp_check()
 use_reverse_proxy = 0
 container_domain = 0
@@ -47,6 +50,7 @@ if use_reverse_proxy == 0:
     print("")
     container_port = input("What port number would you like this container published on?: ")
 
+# Set up the Challenge variables
 flag = ''
 password = ''
 while flag == '':
@@ -59,8 +63,7 @@ while password == '':
 if password == "random":
     password = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
 
-hashpassvar = 'HASHPASSREPLACE'
-
+# Show the variables in use
 print("")
 print(64 * "-")
 print("You password is " + password)
@@ -69,21 +72,7 @@ flag_page_name = ''.join([random.choice(string.ascii_letters + string.digits) fo
 print("Your flag page name is " + flag_page_name)
 print(64 * "-")
 
-# sql_build_script = """
-# DROP TABLE IF EXISTS passwords;
-# CREATE TABLE IF NOT EXISTS passwords (
-#     record_number integer PRIMARY KEY AUTOINCREMENT,
-#     password TEXT,
-#     pagename TEXT
-# );
-# INSERT INTO passwords (
-#     password, pagename
-#     ) VALUES (
-#         '{}','{}'
-#         );
-# """.format(hashpassvar, flag_page_name)
-
-# Read in the page data
+# Read in the file data
 dockerfile_data = open(path_combine("files/dockerfile"), "r").read()
 error_page_data = open(path_combine("files/errorpage.html"), "r").read()
 flag_page_data = open(path_combine("files/flagpage.html"), "r").read()
@@ -96,7 +85,6 @@ flag_page_data = flag_page_data.replace("$FLAG$", flag)
 index_page_data = index_page_data.replace("$PASSWORD$", password)
 
 # Open new files we will be writing
-# dbsetup_page_temp = open(path_combine("dbsetup.sql"), "w+")
 dockerfile_temp = open(path_combine("dockerfile"), "w+")
 error_page_temp = open(path_combine("errorpage.html"), "w+")
 flag_page_temp = open(path_combine("flagpage.html"), "w+")
@@ -105,7 +93,6 @@ index_page_temp = open(path_combine("index.php"), "w+")
 passhashgen_page_temp = open(path_combine("passhashgen.php"), "w+")
 
 # Write the data to the target files
-# dbsetup_page_temp.write(sql_build_script)
 dockerfile_temp.write(dockerfile_data)
 error_page_temp.write(error_page_data)
 flag_page_temp.write(flag_page_data)
@@ -114,7 +101,6 @@ index_page_temp.write(index_page_data)
 passhashgen_page_temp.write(passhashgen_page_data)
 
 # Close the files to save the data
-# dbsetup_page_temp.close()
 dockerfile_temp.close()
 error_page_temp.close()
 flag_page_temp.close()
@@ -122,14 +108,14 @@ htaccess_temp.close()
 index_page_temp.close()
 passhashgen_page_temp.close()
 
-# Do all the work and create the container
-
+# Notify the user stuff is building so they don't get antsy
 print("")
 print(64 * "-")
 print("Content generated, build phase start")
 print(64 * "-")
 print("")
 
+# Build the Container
 container_name = "basicweb-001"
 container_restartpolicy = {"name": "unless-stopped"}
 if use_reverse_proxy == 0:
@@ -172,6 +158,7 @@ elif use_reverse_proxy == 1:
     )
 docker_client.close()
 
+# Notify of complete of build process
 print(64 * "-")
 print("")
 print(container_image + " has been deployed")
@@ -179,7 +166,8 @@ print("")
 print("Cleaning up Build Directory")
 print(64 * "-")
 print("")
-# os.remove(path_combine("dbsetup.sql"))
+
+# Clean up all the temp files
 os.remove(path_combine("dockerfile"))
 os.remove(path_combine("errorpage.html"))
 os.remove(path_combine("flagpage.html"))
@@ -187,4 +175,6 @@ os.remove(path_combine("htaccess"))
 os.remove(path_combine("index.php"))
 os.remove(path_combine("passhashgen.php"))
 
+# Sleep for a hot second so they see the completion message
 print("Returning to menu")
+time.sleep(3)

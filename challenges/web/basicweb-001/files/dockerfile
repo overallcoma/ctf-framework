@@ -12,7 +12,6 @@ COPY flagpage.html /var/www/html/${var_flagpage}
 COPY htaccess /var/www/html/.htaccess
 COPY index.php /var/www/html/index.php
 COPY passhashgen.php /var/www/html/passhashgen.php
-# COPY dbsetup.sql /db/dbsetup.sql
 COPY files/dbconfig.sh /db/dbconfig.sh
 
 RUN apt update -y
@@ -24,7 +23,6 @@ RUN php /var/www/html/passhashgen.php
 RUN touch /db/password.db
 RUN chmod +x /db/dbconfig.sh
 RUN /bin/bash -c /db/dbconfig.sh
-# RUN sqlite3 /db/password.db < /db/dbsetup.sql
 
 RUN rm /var/www/html/passhashgen.php
 RUN rm /var/www/html/hash.txt

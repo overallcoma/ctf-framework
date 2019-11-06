@@ -80,8 +80,6 @@ if use_portainer == 1:
         print("Setting up Portainer")
         docker_client = ctff_functions.create_client()
 
-        docker_client.volumes.create("portainer")
-
         portainer_name = "portainer"
         portainer_restartpolicy = {"name": "unless-stopped"}
         portainer_ports = {"8000/tcp": 8000, "9000/tcp": 9000}
