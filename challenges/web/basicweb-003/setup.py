@@ -187,7 +187,7 @@ os.remove(path_combine("flagpage.html"))
 os.remove(path_combine("htaccess"))
 os.remove(path_combine("index.php"))
 os.remove(path_combine("passhashgen.php"))
-os.replace(path_combine("passwordpage.html"))
+os.remove(path_combine("passwordpage.html"))
 
 # Sleep for a hot second so they see the completion message
 print("Returning to menu")
