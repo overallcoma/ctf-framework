@@ -1,9 +1,9 @@
 import sys
 import argparse
 import subprocess
-import platform
 import os
 import yaml
+import git
 
 
 parser = argparse.ArgumentParser()
@@ -33,6 +33,10 @@ def yes_no_input(prompt_string):
 def path_combine(subdir):
     current_path = os.path.dirname(os.path.realpath(__file__))
     return os.path.join(current_path, subdir)
+
+
+ctfd_git_url = "https://github.com/CTFd/CTFd.git"
+ctfd_volume_location = "/var/lib/docker/volumes/CTFd/_data"
 
 
 def recusrive_yaml(dictionary):
@@ -88,7 +92,12 @@ elif use_reverse_proxy == 0:
     port_replace = "[{}:8000]".format(container_port)
     yaml_data['services']['ctfd']['ports'] = port_replace
 
-for key, value in recusrive_yaml(yaml_data):
-    print(key, value)
+# for key, value in recusrive_yaml(yaml_data):
+#     print(key, value)
+
+docker_client = ctff_functions.create_client()
+docker_client.volumes.create("CTFd")
+
+git.Git().clone(ctfd_git_url, ctfd_volume_location)
 
 exit(0)
