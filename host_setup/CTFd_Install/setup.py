@@ -103,7 +103,11 @@ elif use_reverse_proxy == 0:
 # Clean up how CTFd stores data
 docker_client.volumes.create("CTFd_logs")
 docker_client.volumes.create("CTFd_uploads")
-volume_replace = "{}: '/var/log/CTFd', {}: /var/uploads, {}:/opt/CTFd:ro".format("CTFd_logs", "CTFd_uploads", "CTFd")
+volume_replace = "'{}: /var/log/CTFd', '{}: /var/uploads', '{}:/opt/CTFd:ro'".format(
+    "CTFd_logs",
+    "CTFd_uploads",
+    "CTFd"
+)
 yaml_data['services']['ctfd']['volumes'] = volume_replace
 
 os.remove(ctfd_dockercompose)
