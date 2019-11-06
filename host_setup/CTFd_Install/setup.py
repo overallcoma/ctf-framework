@@ -41,21 +41,22 @@ def recusrive_yaml(dictionary):
             yield from recusrive_yaml(value)
         else:
             yield (key, value)
-
-
-yaml_data = open(path_combine("files/docker-compose.yml"), "r").read()
-yaml_data = yaml.safe_load(yaml_data)
-
-print(yaml_data)
-print("")
-print("")
-print(yaml_data['services']['ctfd']['ports'])
-print("")
-print("")
-for key, value in recusrive_yaml(yaml_data):
-    print(key, value)
-
-exit(0)
+#
+#
+# yaml_data = open(path_combine("files/docker-compose.yml"), "r").read()
+# yaml_data = yaml.safe_load(yaml_data)
+#
+# print(yaml_data)
+# print("")
+# print("")
+# print(yaml_data['services']['ctfd']['ports'])
+# print("")
+# print("")
+# for key, value in recusrive_yaml(yaml_data):
+#     print(key, value)
+#
+#
+# exit(0)
 
 rpcheck = ctff_functions.docker_rpcheck.ctff_rp_check()
 use_reverse_proxy = 0
@@ -74,3 +75,18 @@ if use_reverse_proxy == 0:
     print("")
     container_port = input("What port number would you like this container published on?: ")
 
+# Modify the Docker Compose as needed
+yaml_data = open(path_combine("files/docker-compose.yml"), "r").read()
+yaml_data = yaml.safe_load(yaml_data)
+
+if use_reverse_proxy == 1:
+    del(yaml_data['services']['ctfd']['ports'])
+    expose_replace = {'expose': '8000'}
+    yaml_data['services']['ctfd'].update(expose_replace)
+elif use_reverse_proxy == 0:
+    port_replace = "[{}:8000]".replace(container_port)
+    yaml_data['services']['ctfd']['ports'] = port_replace
+
+print(recusrive_yaml(yaml_data))
+
+exit(0)
