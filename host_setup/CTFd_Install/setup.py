@@ -107,6 +107,7 @@ ctfd_replacement_yaml = open(ctfd_dockercompose, "w+")
 ctfd_replacement_yaml.write(yaml.dump(yaml_data))
 ctfd_replacement_yaml.close()
 
+docker_client.close()
 exit(0)
 
 subprocess_run(["docker-compose", "up", "-d", ctfd_volume_data_path])
