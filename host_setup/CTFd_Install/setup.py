@@ -116,8 +116,6 @@ volume_replace = {
 }
 yaml_data['services']['ctfd']['volumes'] = volume_replace
 
-
-
 os.remove(ctfd_dockercompose)
 ctfd_replacement_yaml = open(ctfd_dockercompose, "w+")
 ctfd_replacement_yaml.write(yaml.dump(yaml_data))
