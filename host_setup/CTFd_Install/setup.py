@@ -98,11 +98,10 @@ if use_reverse_proxy == 1:
     expose_replace = {'expose': '8000'}
     yaml_data['services']['ctfd'].update(expose_replace)
 
-    add_envvars = {
-        'VIRTUAL_HOST': container_domain,
-        'LETSENCRYPT_HOST': container_domain,
-        'LETSENCRYPT_EMAIL': container_rp_email
-    }
+    add_envvars = ["VIRTUAL_HOST={}".format(container_domain),
+                   "LETSENCRYPT_HOST={}".format(container_domain),
+                   "LETSENCRYPT_EMAIL={}".format(container_rp_email)
+    ]
     yaml_data['services']['ctfd']['environment'].append(add_envvars)
 
 elif use_reverse_proxy == 0:
