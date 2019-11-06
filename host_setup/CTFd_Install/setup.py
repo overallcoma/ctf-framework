@@ -93,9 +93,18 @@ yaml_data = open(ctfd_dockercompose, "r").read()
 yaml_data = yaml.safe_load(yaml_data)
 
 if use_reverse_proxy == 1:
+    #Replace "ports" with "expose"
     del(yaml_data['services']['ctfd']['ports'])
     expose_replace = {'expose': '8000'}
     yaml_data['services']['ctfd'].update(expose_replace)
+
+    add_envvars = {
+        'VIRTUAL_HOST': container_domain,
+        'LETSENCRYPT_HOST': container_domain,
+        'LETSENCRYPT_EMAIL': container_rp_email
+    }
+    yaml_data['sevices']['ctfd']['environment'].update(add_envvars)
+
 elif use_reverse_proxy == 0:
     port_replace = "[{}:8000]".format(container_port)
     yaml_data['services']['ctfd']['ports'] = port_replace
@@ -110,9 +119,13 @@ volume_replace = {
 }
 yaml_data['services']['ctfd']['volumes'] = volume_replace
 
+
+
 os.remove(ctfd_dockercompose)
 ctfd_replacement_yaml = open(ctfd_dockercompose, "w+")
 ctfd_replacement_yaml.write(yaml.dump(yaml_data))
 ctfd_replacement_yaml.close()
+
+exit(0)
 
 subprocess_run(["docker-compose", "up", "-d", ctfd_volume_location])
