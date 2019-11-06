@@ -89,9 +89,10 @@ volume_replace = [ctfd_app_volume, ctfd_logs_volume, ctfd_uploads_volume]
 yaml_data['services']['ctfd']['volumes'] = volume_replace
 
 # Put the containers on the default network
+docker_client.networks.create("ctfd_internal", internal=True, attachable=True)
 yaml_data['networks']['default'] = {'external': {'name': 'bridge'}}
 yaml_data['networks']['internal'] = {'internal': True, 'name': 'ctfd_internal'}
-# Change the YAML version
+# Change the YAML version - Can't have a renamed internal network without this
 yaml_data['version'] = '3.5'
 
 os.remove(ctfd_dockercompose)
