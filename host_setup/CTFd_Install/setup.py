@@ -37,8 +37,11 @@ def path_combine(subdir):
 
 
 ctfd_git_url = "https://github.com/CTFd/CTFd.git"
-ctfd_volume_location = "/var/lib/docker/volumes/CTFd/_data"
-ctfd_dockercompose = os.path.join(ctfd_volume_location, "docker-compose.yml")
+ctfd_volume_path = "/var/lib/docker/volumes/CTFd"
+ctfd_logs_path = "/var/lib/docker/volumes/CTFd_logs"
+ctfd_uploads_path = "/var/lib/docker/volumes/CTFd_uploads"
+ctfd_volume_data_path = os.path.join(ctfd_volume_path, "_data")
+ctfd_dockercompose = os.path.join(ctfd_volume_data_path, "docker-compose.yml")
 
 
 def recusrive_yaml(dictionary):
@@ -68,9 +71,9 @@ if use_reverse_proxy == 0:
 
 # Clone CTFd Repo into a Docker Volume
 docker_client = ctff_functions.create_client()
-if os.path.exists(ctfd_volume_location):
-    shutil.rmtree(ctfd_volume_location)
-git.Git().clone(ctfd_git_url, ctfd_volume_location)
+if os.path.exists(ctfd_volume_data_path):
+    shutil.rmtree(ctfd_volume_data_path)
+git.Git().clone(ctfd_git_url, ctfd_volume_data_path)
 
 # Modify the Docker Compose as needed
 yaml_data = open(ctfd_dockercompose, "r").read()
@@ -93,7 +96,10 @@ elif use_reverse_proxy == 0:
 # Clean up how CTFd stores data
 docker_client.volumes.create("CTFd_logs")
 docker_client.volumes.create("CTFd_uploads")
-volume_replace = ["CTFd_logs:/var/log/CTFd", "CTFd_uploads:/var/uploads", "CTFd:/opt/CTFd:ro"]
+ctfd_app_volume = "{}:/opt/CTFd:ro".format(ctfd_volume_path)
+ctfd_logs_volume = "{}:/var/logs/CTFd".format(ctfd_logs_path)
+ctfd_uploads_volume = "{}:/var/uploads".format(ctfd_uploads_path)
+volume_replace = [ctfd_app_volume, ctfd_logs_volume, ctfd_uploads_volume]
 yaml_data['services']['ctfd']['volumes'] = volume_replace
 
 os.remove(ctfd_dockercompose)
@@ -103,4 +109,4 @@ ctfd_replacement_yaml.close()
 
 exit(0)
 
-subprocess_run(["docker-compose", "up", "-d", ctfd_volume_location])
+subprocess_run(["docker-compose", "up", "-d", ctfd_volume_data_path])
