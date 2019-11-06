@@ -22,8 +22,8 @@ RUN echo $var_password > /var/www/html/password.txt
 RUN echo $var_flagpage > /var/www/html/flagpage.txt
 RUN php /var/www/html/passhashgen.php
 RUN touch /db/password.db
-RUN chmod +x /db/passinsert.sh
-RUN /bin/bash -c /db/passinsert.sh
+RUN chmod +x /db/dbconfig.sh
+RUN /bin/bash -c /db/dbconfig.sh
 # RUN sqlite3 /db/password.db < /db/dbsetup.sql
 
 RUN rm /var/www/html/passhashgen.php
