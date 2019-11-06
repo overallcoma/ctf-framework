@@ -47,22 +47,6 @@ def recusrive_yaml(dictionary):
             yield from recusrive_yaml(value)
         else:
             yield (key, value)
-#
-#
-# yaml_data = open(path_combine("files/docker-compose.yml"), "r").read()
-# yaml_data = yaml.safe_load(yaml_data)
-#
-# print(yaml_data)
-# print("")
-# print("")
-# print(yaml_data['services']['ctfd']['ports'])
-# print("")
-# print("")
-# for key, value in recusrive_yaml(yaml_data):
-#     print(key, value)
-#
-#
-# exit(0)
 
 
 rpcheck = ctff_functions.docker_rpcheck.ctff_rp_check()
@@ -95,8 +79,8 @@ yaml_data = yaml.safe_load(yaml_data)
 if use_reverse_proxy == 1:
     # Replace "ports" with "expose"
     del(yaml_data['services']['ctfd']['ports'])
-    expose_replace = {'expose': '8000'}
-    yaml_data['services']['ctfd'].update(expose_replace)
+    yaml_data['services']['ctfd']['expose'] = [8000]
+
     # Add in the RP needed env vars
     yaml_data['services']['ctfd']['environment'].append("VIRTUAL_HOST={}".format(container_domain))
     yaml_data['services']['ctfd']['environment'].append("LETSENCRYPT_HOST={}".format(container_domain))
@@ -109,11 +93,10 @@ elif use_reverse_proxy == 0:
 # Clean up how CTFd stores data
 docker_client.volumes.create("CTFd_logs")
 docker_client.volumes.create("CTFd_uploads")
-volume_replace = {
-    'CTFd_logs': '/var/logs/CTFd',
-    'CTFd_uploads': '/var/uploads',
-    'CTFd': '/opt/CTFd:ro'
-}
+volume_replace = ["CTFd_logs: /var/logs/CTFd",
+    "CTFd_uploads: /var/uploads",
+    "CTFd': /opt/CTFd:ro"
+]
 yaml_data['services']['ctfd']['volumes'] = volume_replace
 
 os.remove(ctfd_dockercompose)
