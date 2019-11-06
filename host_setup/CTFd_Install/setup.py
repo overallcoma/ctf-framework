@@ -102,7 +102,7 @@ elif use_reverse_proxy == 0:
 
 os.remove(ctfd_dockercompose)
 ctfd_replacement_yaml = open(ctfd_dockercompose, "w+")
-ctfd_replacement_yaml.write(yaml.dump_all(yaml_data))
+ctfd_replacement_yaml.write(yaml.dump(yaml_data))
 ctfd_replacement_yaml.close()
 
 exit(0)
