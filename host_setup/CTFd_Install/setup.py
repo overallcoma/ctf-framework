@@ -35,14 +35,22 @@ def path_combine(subdir):
     return os.path.join(current_path, subdir)
 
 
+def recusrive_yaml(dictionary):
+    for key, value in dictionary.items():
+        if type(value) is dict:
+            yield from recusrive_yaml(value)
+        else:
+            yield (key, value)
+
+
 yaml_data = open(path_combine("files/docker-compose.yml"), "r").read()
 yaml_data = yaml.safe_load(yaml_data)
 
 print(yaml_data)
 print("")
 print("")
-for key in yaml_data:
-    print(key)
+for key, value in recusrive_yaml(yaml_data):
+    print(key, value)
 
 exit(0)
 
