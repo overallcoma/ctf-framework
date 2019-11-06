@@ -37,8 +37,13 @@ def path_combine(subdir):
 
 yaml_data = open(path_combine("files/docker-compose.yml"), "r").read()
 yaml_data = yaml.safe_load(yaml_data)
-print(yaml_data)
 
+print(yaml_data)
+print("")
+print("")
+for key in yaml_data:
+    if key == "ports":
+        print(key)
 
 exit(0)
 
