@@ -42,9 +42,9 @@ if rpcheck == 1:
     use_reverse_proxy = yes_no_input("Would you like to use the reverse proxy for this container?")
     if use_reverse_proxy == 1:
         print("")
-        container_rp_email = input("What email address would you like to use for the certificate?: ")
-        print("")
         container_domain = input("What domain name would you like this container to have?: ")
+        print("")
+        container_rp_email = input("What email address would you like to use for the certificate?: ")
 
 if use_reverse_proxy == 0:
     print("")
@@ -53,17 +53,32 @@ if use_reverse_proxy == 0:
 # Set up the Challenge variables
 flag = ''
 password = ''
+passwordpage_name = ''
 while flag == '':
     print("")
     flag = input("Please enter the desired flag: ")
+while password == '':
+    print("")
+    print("Please enter the password that will be hidden")
+    password = input("Or enter \"random\" to generate a random password: ")
+if password == "random":
+    password = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
+while passwordpage_name == '':
+    print("")
+    print("Please enter the password page that will be in the index.php code")
+    passwordpage_name = input("Or enter \"random\" to generate a random password page name: ")
+if passwordpage_name == "random":
+    passwordpage_name = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(64)]) + ".html"
 
 # Show the variables in use
 flag_page_name = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(64)]) + ".html"
 print("")
 print(64 * "-")
-print("This challenge uses a blank password")
+print("You password is " + password)
 print("")
 print("Your flag page name is " + flag_page_name)
+print("")
+print("Your password page will be located at " + passwordpage_name)
 print(64 * "-")
 
 # Read in the file data
@@ -76,7 +91,7 @@ passhashgen_page_data = open(path_combine("files/passhashgen.php"), "r").read()
 
 # Replace variables in file data
 flag_page_data = flag_page_data.replace("$FLAG$", flag)
-index_page_data = index_page_data.replace("$PASSWORD$", password)
+index_page_data = index_page_data.replace("$PASSWORDPAGE$", passwordpage_name)
 
 # Open new files we will be writing
 dockerfile_temp = open(path_combine("dockerfile"), "w+")
@@ -85,6 +100,7 @@ flag_page_temp = open(path_combine("flagpage.html"), "w+")
 htaccess_temp = open(path_combine("htaccess"), "w+")
 index_page_temp = open(path_combine("index.php"), "w+")
 passhashgen_page_temp = open(path_combine("passhashgen.php"), "w+")
+password_page_temp = open(path_combine("passwordpage.html"), "w+")
 
 # Write the data to the target files
 dockerfile_temp.write(dockerfile_data)
@@ -93,6 +109,7 @@ flag_page_temp.write(flag_page_data)
 htaccess_temp.write(htaccess_data)
 index_page_temp.write(index_page_data)
 passhashgen_page_temp.write(passhashgen_page_data)
+password_page_temp.write(password)
 
 # Close the files to save the data
 dockerfile_temp.close()
@@ -101,6 +118,7 @@ flag_page_temp.close()
 htaccess_temp.close()
 index_page_temp.close()
 passhashgen_page_temp.close()
+password_page_temp.close()
 
 # Notify the user stuff is building so they don't get antsy
 print("")
@@ -110,8 +128,8 @@ print(64 * "-")
 print("")
 
 # Build the Container
-container_name = "basicweb-002"
-container_image = "ctff/basicweb002:latest"
+container_name = "basicweb-003"
+container_image = "ctff/basicweb003:latest"
 container_restartpolicy = {"name": "unless-stopped"}
 if use_reverse_proxy == 0:
     container_ports = {"80/tcp": "{}".format(container_port)}
@@ -122,7 +140,8 @@ try:
     build_path = os.path.dirname(os.path.realpath(__file__))
     docker_client.images.build(path=build_path, tag=container_image, rm=True, forcerm=True, quiet=False, buildargs={
         "var_flagpage": flag_page_name,
-        "var_password": password
+        "var_password": password,
+        "var_passwordpage_name": passwordpage_name
     })
 except Exception as e:
     print(e)
@@ -168,6 +187,7 @@ os.remove(path_combine("flagpage.html"))
 os.remove(path_combine("htaccess"))
 os.remove(path_combine("index.php"))
 os.remove(path_combine("passhashgen.php"))
+os.replace(path_combine("passwordpage.html"))
 
 # Sleep for a hot second so they see the completion message
 print("Returning to menu")

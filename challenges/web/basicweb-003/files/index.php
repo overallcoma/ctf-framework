@@ -4,17 +4,18 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
 <html>
     <head>
         <title>
-            Stage 1
+            Stage 3
         </title>
     </head>
     <body text="#ffffff" bgcolor="#000000">
         <div style="text-align: center;">
-            <form name="Stage1" method="post">
+            <form name="Stage3" method="post">
                 <h2>
                     Enter your password:
                 </h2>
                 <br>
                 <input name="password" type="text">
+                <input type="hidden" name="file" value=$PASSWORDPAGE$<br>
                 <br>
                 <br>
                 <input type="submit"><br>
@@ -23,7 +24,6 @@ if($_SERVER['REQUEST_METHOD'] === 'GET'){
             </form>
         </div>
     </body>
-<!--Don't forget your password is $PASSWORD$--!>
 </html>
 <?php
 }else {

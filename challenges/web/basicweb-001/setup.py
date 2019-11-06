@@ -42,9 +42,9 @@ if rpcheck == 1:
     use_reverse_proxy = yes_no_input("Would you like to use the reverse proxy for this container?")
     if use_reverse_proxy == 1:
         print("")
-        container_domain = input("What domain name would you like this container to have?: ")
-        print("")
         container_rp_email = input("What email address would you like to use for the certificate?: ")
+        print("")
+        container_domain = input("What domain name would you like this container to have?: ")
 
 if use_reverse_proxy == 0:
     print("")
@@ -64,11 +64,11 @@ if password == "random":
     password = ''.join(random.choices(string.ascii_letters + string.digits, k=16))
 
 # Show the variables in use
+flag_page_name = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(64)]) + ".html"
 print("")
 print(64 * "-")
 print("You password is " + password)
 print("")
-flag_page_name = ''.join([random.choice(string.ascii_letters + string.digits) for n in range(64)]) + ".html"
 print("Your flag page name is " + flag_page_name)
 print(64 * "-")
 
@@ -117,10 +117,10 @@ print("")
 
 # Build the Container
 container_name = "basicweb-001"
+container_image = "ctff/basicweb001:latest"
 container_restartpolicy = {"name": "unless-stopped"}
 if use_reverse_proxy == 0:
     container_ports = {"80/tcp": "{}".format(container_port)}
-container_image = "ctff/basicweb001:latest"
 
 docker_client = ctff_functions.create_client()
 
