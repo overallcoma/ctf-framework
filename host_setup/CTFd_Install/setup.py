@@ -4,6 +4,7 @@ import subprocess
 import os
 import yaml
 import git
+import shutil
 
 
 parser = argparse.ArgumentParser()
@@ -83,7 +84,8 @@ if use_reverse_proxy == 0:
 
 # Clone CTFd Repo into a Docker Volume
 docker_client = ctff_functions.create_client()
-docker_client.volumes.create("CTFd")
+if os.path.exists(ctfd_volume_location):
+    shutil.rmtree(ctfd_volume_location)
 git.Git().clone(ctfd_git_url, ctfd_volume_location)
 
 # Modify the Docker Compose as needed
