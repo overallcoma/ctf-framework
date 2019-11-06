@@ -92,7 +92,7 @@ yaml_data['services']['ctfd']['volumes'] = volume_replace
 yaml_data['networks']['default'] = {'external': {'name': 'bridge'}}
 yaml_data['networks']['internal'] = {'internal': True, 'name': 'ctfd_internal'}
 # Change the YAML version
-yaml_data['version'] = '3'
+yaml_data['version'] = '3.5'
 
 os.remove(ctfd_dockercompose)
 ctfd_replacement_yaml = open(ctfd_dockercompose, "w+")
