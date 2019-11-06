@@ -49,6 +49,9 @@ yaml_data = yaml.safe_load(yaml_data)
 print(yaml_data)
 print("")
 print("")
+print(yaml_data['services']['ctfd']['ports'])
+print("")
+print("")
 for key, value in recusrive_yaml(yaml_data):
     print(key, value)
 
