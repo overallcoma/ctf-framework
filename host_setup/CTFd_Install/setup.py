@@ -31,26 +31,12 @@ def yes_no_input(prompt_string):
     print(response_error)
 
 
-def path_combine(subdir):
-    current_path = os.path.dirname(os.path.realpath(__file__))
-    return os.path.join(current_path, subdir)
-
-
 ctfd_git_url = "https://github.com/CTFd/CTFd.git"
 ctfd_volume_path = "/var/lib/docker/volumes/CTFd"
 ctfd_logs_path = "/var/lib/docker/volumes/CTFd_logs"
 ctfd_uploads_path = "/var/lib/docker/volumes/CTFd_uploads"
 ctfd_volume_data_path = os.path.join(ctfd_volume_path, "_data")
 ctfd_dockercompose = os.path.join(ctfd_volume_data_path, "docker-compose.yml")
-
-
-def recusrive_yaml(dictionary):
-    for key, value in dictionary.items():
-        if type(value) is dict:
-            yield from recusrive_yaml(value)
-        else:
-            yield (key, value)
-
 
 rpcheck = ctff_functions.docker_rpcheck.ctff_rp_check()
 use_reverse_proxy = 0
@@ -104,6 +90,7 @@ yaml_data['services']['ctfd']['volumes'] = volume_replace
 
 # Put the containers on the default network
 yaml_data['networks']['default'] = {'external': {'name': 'bridge'}}
+yaml_data['networks']['internal'] = {'name': 'ctfd_internal'}
 
 os.remove(ctfd_dockercompose)
 ctfd_replacement_yaml = open(ctfd_dockercompose, "w+")
