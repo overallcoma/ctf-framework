@@ -102,6 +102,9 @@ ctfd_uploads_volume = "{}:/var/uploads".format(ctfd_uploads_path)
 volume_replace = [ctfd_app_volume, ctfd_logs_volume, ctfd_uploads_volume]
 yaml_data['services']['ctfd']['volumes'] = volume_replace
 
+# Put the containers on the default network
+yaml_data['networks']['default']['external'] = "bridge"
+
 os.remove(ctfd_dockercompose)
 ctfd_replacement_yaml = open(ctfd_dockercompose, "w+")
 ctfd_replacement_yaml.write(yaml.dump(yaml_data))
@@ -110,4 +113,4 @@ ctfd_replacement_yaml.close()
 docker_client.close()
 exit(0)
 
-subprocess_run(["docker-compose", "up", "-d", ctfd_volume_data_path])
+subprocess_run(["docker-compose", "-f", ctfd_volume_data_path, "up"])
