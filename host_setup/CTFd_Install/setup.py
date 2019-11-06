@@ -88,6 +88,7 @@ elif use_reverse_proxy == 0:
     port_replace = "[{}:8000]".format(container_port)
     yaml_data['services']['ctfd']['ports'] = port_replace
 
-print(recusrive_yaml(yaml_data))
+for key, value in recusrive_yaml(yaml_data):
+    print(key, value)
 
 exit(0)
