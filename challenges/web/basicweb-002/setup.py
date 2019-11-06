@@ -45,7 +45,6 @@ if rpcheck == 1:
         container_rp_email = input("What email address would you like to use for the certificate?: ")
         print("")
         container_domain = input("What domain name would you like this container to have?: ")
-
 if use_reverse_proxy == 0:
     print("")
     container_port = input("What port number would you like this container published on?: ")
