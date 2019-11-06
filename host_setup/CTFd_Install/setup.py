@@ -103,7 +103,7 @@ volume_replace = [ctfd_app_volume, ctfd_logs_volume, ctfd_uploads_volume]
 yaml_data['services']['ctfd']['volumes'] = volume_replace
 
 # Put the containers on the default network
-yaml_data['networks']['default']['external'] = 'bridge'
+yaml_data['networks']['default'].update(external='bridge')
 
 os.remove(ctfd_dockercompose)
 ctfd_replacement_yaml = open(ctfd_dockercompose, "w+")
