@@ -58,6 +58,7 @@ def recusrive_yaml(dictionary):
 #
 # exit(0)
 
+
 rpcheck = ctff_functions.docker_rpcheck.ctff_rp_check()
 use_reverse_proxy = 0
 container_domain = 0
@@ -84,7 +85,7 @@ if use_reverse_proxy == 1:
     expose_replace = {'expose': '8000'}
     yaml_data['services']['ctfd'].update(expose_replace)
 elif use_reverse_proxy == 0:
-    port_replace = "[{}:8000]".replace(container_port)
+    port_replace = "[{}:8000]".format(container_port)
     yaml_data['services']['ctfd']['ports'] = port_replace
 
 print(recusrive_yaml(yaml_data))
