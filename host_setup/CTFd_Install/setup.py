@@ -103,7 +103,7 @@ if use_reverse_proxy == 1:
         'LETSENCRYPT_HOST': container_domain,
         'LETSENCRYPT_EMAIL': container_rp_email
     }
-    yaml_data['sevices']['ctfd']['environment'].update(add_envvars)
+    yaml_data['services']['ctfd']['environment'].update(add_envvars)
 
 elif use_reverse_proxy == 0:
     port_replace = "[{}:8000]".format(container_port)
