@@ -42,8 +42,7 @@ print(yaml_data)
 print("")
 print("")
 for key in yaml_data:
-    if key == "ports":
-        print(key)
+    print(key)
 
 exit(0)
 
