@@ -100,6 +100,12 @@ elif use_reverse_proxy == 0:
     port_replace = "[{}:8000]".format(container_port)
     yaml_data['services']['ctfd']['ports'] = port_replace
 
+# Clean up how CTFd stores data
+docker_client.volumes.create("CTFd_logs")
+docker_client.volumes.create("CTFd_uploads")
+volume_replace = "{}: '/var/log/CTFd', {}: /var/uploads, {}:/opt/CTFd:ro".format("CTFd_logs", "CTFd_uploads", "CTFd")
+yaml_data['services']['ctfd']['volumes'] = volume_replace
+
 os.remove(ctfd_dockercompose)
 ctfd_replacement_yaml = open(ctfd_dockercompose, "w+")
 ctfd_replacement_yaml.write(yaml.dump(yaml_data))
