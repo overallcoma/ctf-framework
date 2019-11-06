@@ -37,6 +37,7 @@ def path_combine(subdir):
 
 ctfd_git_url = "https://github.com/CTFd/CTFd.git"
 ctfd_volume_location = "/var/lib/docker/volumes/CTFd/_data"
+ctfd_dockercompose = os.path.join(ctfd_volume_location, "docker-compose.yml")
 
 
 def recusrive_yaml(dictionary):
@@ -80,8 +81,13 @@ if use_reverse_proxy == 0:
     print("")
     container_port = input("What port number would you like this container published on?: ")
 
+# Clone CTFd Repo into a Docker Volume
+docker_client = ctff_functions.create_client()
+docker_client.volumes.create("CTFd")
+git.Git().clone(ctfd_git_url, ctfd_volume_location)
+
 # Modify the Docker Compose as needed
-yaml_data = open(path_combine("files/docker-compose.yml"), "r").read()
+yaml_data = open(ctfd_dockercompose, "r").read()
 yaml_data = yaml.safe_load(yaml_data)
 
 if use_reverse_proxy == 1:
@@ -92,12 +98,11 @@ elif use_reverse_proxy == 0:
     port_replace = "[{}:8000]".format(container_port)
     yaml_data['services']['ctfd']['ports'] = port_replace
 
-# for key, value in recusrive_yaml(yaml_data):
-#     print(key, value)
-
-docker_client = ctff_functions.create_client()
-docker_client.volumes.create("CTFd")
-
-git.Git().clone(ctfd_git_url, ctfd_volume_location)
+os.remove(ctfd_dockercompose)
+ctfd_replacement_yaml = open(ctfd_dockercompose, "w+")
+ctfd_replacement_yaml.write(yaml.dump_all(yaml_data))
+ctfd_replacement_yaml.close()
 
 exit(0)
+
+subprocess_run(["docker-compose", "up", "-d", ctfd_volume_location])
