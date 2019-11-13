@@ -73,6 +73,11 @@ except Exception as e:
     print("Error preparing the environment for docker containers")
     exit(1)
 
+# Set up the user-defined networks for ctff
+docker_client = ctff_functions.create_client()
+docker_client.networks.create("ctff_bridge", driver="bridge", attachable=True)
+docker_client.networks.create("ctff_internal", attachable=True, internal=True)
+
 if use_portainer == 1:
     try:
         print("")
@@ -92,6 +97,7 @@ if use_portainer == 1:
                 "mode": "rw"
             }
         }
+        portainer_network = "ctff_bridge"
         portainer_image = "portainer/portainer:latest"
 
         if portainer_domain == 0:
@@ -102,6 +108,7 @@ if use_portainer == 1:
                 ports=portainer_ports,
                 publish_all_ports=True,
                 volumes=portainer_volumes,
+                network=portainer_network,
                 image=portainer_image
             )
         elif portainer_domain != 0:
@@ -118,6 +125,7 @@ if use_portainer == 1:
                 ports=portainer_ports,
                 volumes=portainer_volumes,
                 environment=portainer_envvars,
+                network=portainer_network,
                 image=portainer_image
             )
         docker_client.close()
@@ -154,6 +162,7 @@ if use_reverseproxy == 1:
                 "bind": "/tmp/docker.sock",
                 "mode": "ro"}
             }
+        nginxproxy_network = "ctff_bridge"
         nginxproxy_image = "jwilder/nginx-proxy:latest"
         docker_client.containers.run(
             detach=True,
@@ -161,6 +170,7 @@ if use_reverseproxy == 1:
             restart_policy=nginxproxy_restartpolicy,
             ports=nginxproxy_ports,
             volumes=nginxproxy_volumes,
+            network=nginxproxy_network,
             image=nginxproxy_image
         )
 
@@ -174,6 +184,7 @@ if use_reverseproxy == 1:
         }
         nginxproxycompanion_envvars = {
             "LETSENCRYP_EMAIL": reverseproxy_email}
+        nginxproxycompanion_network = "ctff_bridge"
         nginxproxycompanion_image = "jrcs/letsencrypt-nginx-proxy-companion:latest"
         docker_client.containers.run(
             detach=True,
@@ -181,6 +192,7 @@ if use_reverseproxy == 1:
             restart_policy=nginxproxycompanion_restartpolicy,
             volumes_from=nginxproxycompanion_volumesfrom,
             volumes=nginxproxycompanion_volumes,
+            network=nginxproxycompanion_network,
             image=nginxproxycompanion_image
         )
         docker_client.close()
