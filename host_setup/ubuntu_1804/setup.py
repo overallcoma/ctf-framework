@@ -77,6 +77,7 @@ except Exception as e:
 docker_client = ctff_functions.create_client()
 docker_client.networks.create("ctff_bridge", driver="bridge", attachable=True)
 docker_client.networks.create("ctff_internal", attachable=True, internal=True)
+docker_client.close()
 
 if use_portainer == 1:
     try:
