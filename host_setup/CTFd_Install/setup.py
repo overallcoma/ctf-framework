@@ -90,7 +90,7 @@ yaml_data['services']['ctfd']['volumes'] = volume_replace
 
 # Put the containers on the default network
 # docker_client.networks.create("ctfd_internal", internal=True, attachable=True)
-yaml_data['networks'] = {"default": {'external': {'name' : 'bridge'}} , 'internal': {'internal': 'true'}}
+yaml_data['networks'] = {"default": {'external': {'name' : 'bridge'}}, 'internal': {'internal': 'true'}}
 # yaml_data['networks']['default'] = {'external': {'name': 'bridge'}, 'internal': {'internal': 'true'}}
 # yaml_data['networks']['internal'] = {'external': {'name': 'ctfd_internal'}}
 # Change the YAML version - Can't have a renamed internal network without this
