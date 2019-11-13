@@ -75,7 +75,7 @@ except Exception as e:
 
 # Set up the user-defined networks for ctff
 docker_client = ctff_functions.create_client()
-docker_client.networks.create("ctff_bridge", driver="bridge", attachable=True)
+docker_client.networks.create("ctff_bridge", attachable=True)
 docker_client.networks.create("ctff_internal", attachable=True, internal=True)
 docker_client.close()
 
