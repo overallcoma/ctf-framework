@@ -32,11 +32,11 @@ def yes_no_input(prompt_string):
 
 
 ctfd_git_url = "https://github.com/CTFd/CTFd.git"
-ctfd_volume_path = "/var/lib/docker/volumes/CTFd"
-ctfd_logs_path = "/var/lib/docker/volumes/CTFd_logs"
-ctfd_uploads_path = "/var/lib/docker/volumes/CTFd_uploads"
-ctfd_volume_data_path = os.path.join(ctfd_volume_path, "_data")
-ctfd_dockercompose = os.path.join(ctfd_volume_data_path, "docker-compose.yml")
+ctfd_volume_path = "/var/lib/docker/volumes/CTFd/_data"
+ctfd_logs_path = "/var/lib/docker/volumes/CTFd_logs/_data"
+ctfd_uploads_path = "/var/lib/docker/volumes/CTFd_uploads/_data"
+# ctfd_volume_data_path = os.path.join(ctfd_volume_path, "_data")
+ctfd_dockercompose = os.path.join(ctfd_volume_path, "docker-compose.yml")
 
 rpcheck = ctff_functions.docker_rpcheck.ctff_rp_check()
 use_reverse_proxy = 0
@@ -57,9 +57,9 @@ if use_reverse_proxy == 0:
 
 # Clone CTFd Repo into a Docker Volume
 docker_client = ctff_functions.create_client()
-if os.path.exists(ctfd_volume_data_path):
-    shutil.rmtree(ctfd_volume_data_path)
-git.Git().clone(ctfd_git_url, ctfd_volume_data_path)
+if os.path.exists(ctfd_volume_path):
+    shutil.rmtree(ctfd_volume_path)
+git.Git().clone(ctfd_git_url, ctfd_volume_path)
 
 # Modify the Docker Compose as needed
 yaml_data = open(ctfd_dockercompose, "r").read()
