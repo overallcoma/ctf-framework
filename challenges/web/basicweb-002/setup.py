@@ -31,6 +31,8 @@ def path_combine(subdir):
     return os.path.join(current_path, subdir)
 
 
+ctff_network = "ctff_bridge"
+
 # Check if the reverse proxy setup is deployed
 rpcheck = ctff_functions.docker_rpcheck.ctff_rp_check()
 use_reverse_proxy = 0
@@ -131,6 +133,7 @@ if use_reverse_proxy == 0:
     docker_client.containers.run(
         detach=True,
         name=container_name,
+        network=ctff_network,
         restart_policy=container_restartpolicy,
         ports=container_ports,
         publish_all_ports=True,
@@ -145,6 +148,7 @@ elif use_reverse_proxy == 1:
     docker_client.containers.run(
         detach=True,
         name=container_name,
+        network=ctff_network,
         restart_policy=container_restartpolicy,
         environment=container_envvars,
         image=container_image
