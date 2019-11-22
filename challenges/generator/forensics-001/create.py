@@ -27,8 +27,7 @@ if os.path.exists(source_pic):
         pic_output_bytes_3 = source_pic_content[source_pic_length_90:source_pic_length]
         pic_output_final = pic_output_bytes_1 + pic_output_bytes_2 + pic_output_bytes_3
         print(os.path.dirname(output_path))
-        if not os.path.dirname(output_path):
-            os.makedirs(os.path.dirname(output_path))
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
         file_object = open(output_path, "wb+")
         file_object.write(pic_output_final)
         print("I drew you a picture")
@@ -38,7 +37,7 @@ if os.path.exists(source_pic):
         print("Returning to menu in 5 seconds")
         time.sleep(5)
     except Exception as e:
-        print("Error encoutnered")
+        print("Error encountered")
         print("")
         print(e)
         print("")
