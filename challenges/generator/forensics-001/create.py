@@ -30,20 +30,20 @@ if os.path.exists(source_pic):
     try:
         source_pic_content = open(source_pic, "rb")
         source_pic_content = source_pic_content.read()
-        output_file = "./output.jpg"
         source_pic_length = len(source_pic_content)
         source_pic_length_90 = round(source_pic_length * 0.9)
         pic_output_bytes_1 = source_pic_content[0:source_pic_length_90]
         pic_output_bytes_2 = str.encode(flag)
         pic_output_bytes_3 = source_pic_content[source_pic_length_90:source_pic_length]
         pic_output_final = pic_output_bytes_1 + pic_output_bytes_2 + pic_output_bytes_3
-        file_object = open(output_file, "wb+")
+        file_object = open(output_path, "wb+")
         file_object.write(pic_output_final)
         print("I drew you a picture")
         print("")
         print("File with flag {} place in {}".format(flag, output_path))
         print("")
         print("Returning to menu in 5 seconds")
+        time.sleep(5)
     except Exception as e:
         print("Error encoutnered")
         print("")
