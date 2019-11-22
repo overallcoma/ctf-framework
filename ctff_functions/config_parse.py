@@ -34,7 +34,10 @@ def config_parse(folder):
     except Exception as e:
         module_prettyname = 'No PrettyName'
 
-    module_action = module_info["action"]
+    try:
+        module_action = module_info["action"]
+    except Exception as e:
+        module_action = ""
 
     module_configuration = CtffModuleConfig(module_type, module_prettyname, module_action, folder)
     return module_configuration
