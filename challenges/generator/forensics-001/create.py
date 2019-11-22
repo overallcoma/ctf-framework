@@ -1,16 +1,6 @@
 import os
 import pathlib
 import time
-import sys
-import argparse
-
-# This is here to import the functions from ctff
-parser = argparse.ArgumentParser()
-parser.add_argument("path", type=str)
-args = parser.parse_args()
-sys.path.append(args.path)
-import ctff_functions
-
 
 challenge_name = "forensics-001"
 output_file = "output.jpg"
@@ -36,6 +26,7 @@ if os.path.exists(source_pic):
         pic_output_bytes_2 = str.encode(flag)
         pic_output_bytes_3 = source_pic_content[source_pic_length_90:source_pic_length]
         pic_output_final = pic_output_bytes_1 + pic_output_bytes_2 + pic_output_bytes_3
+        os.makedirs(output_path)
         file_object = open(output_path, "wb+")
         file_object.write(pic_output_final)
         print("I drew you a picture")
