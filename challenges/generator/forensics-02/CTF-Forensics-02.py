@@ -1,6 +1,45 @@
 import argparse
-import piexif
-from PIL import Image
+import subprocess
+
+
+def yes_no_input(prompt_string):
+    response_error = "Invalid Selection"
+    while response_error == "Invalid Selection":
+        prompt_string_yn = prompt_string + " (Y/N):"
+        response = input(prompt_string_yn)
+        response = response.lower().strip()
+        if response[0] == "y":
+            return 1
+        if response[0] == "n":
+            return 0
+    print(response_error)
+
+
+try:
+    import piexif
+except ImportError as e:
+    try:
+        print("")
+        import_piexif = yes_no_input("Piexif is not present.  Would you like to install this module?")
+        if import_piexif == 1:
+            subprocess.call(["python3-pip", "install", "piexif"])
+    except Exception as e:
+        print("Unable to install required module")
+        print(e)
+        exit()
+
+try:
+    from PIL import Image
+except ImportError as e:
+    try:
+        print("")
+        import_piexif = yes_no_input("Pillow is not present.  Would you like to install this module?")
+        if import_piexif == 1:
+            subprocess.call(["python3-pip", "install", "Pillow"])
+    except Exception as e:
+        print("Unable to install required module")
+        print(e)
+        exit()
 
 parser = argparse.ArgumentParser()
 parser.add_argument("-s", "--source", dest="source_pic", help="Source picture to use")
