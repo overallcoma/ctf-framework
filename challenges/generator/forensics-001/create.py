@@ -20,7 +20,7 @@ source_pic = input("Please enter the file path for the picture to be altered: ")
 print("")
 output_path = os.path.join(str(pathlib.Path.home()), challenge_name, output_file)
 print("")
-change_output_path = input("Please select output path ({})").format(output_file)
+change_output_path = input("Please select output path ({})".format(output_file))
 if change_output_path:
     output_path = change_output_path
 
@@ -41,7 +41,7 @@ if os.path.exists(source_pic):
         file_object.write(pic_output_final)
         print("I drew you a picture")
         print("")
-        print("File with flag {} place in {}").format(flag, output_path)
+        print("File with flag {} place in {}".format(flag, output_path))
         print("")
         print("Returning to menu in 5 seconds")
     except Exception as e:
