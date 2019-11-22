@@ -7,11 +7,13 @@ config_file_name = 'info.cfg'
 class CtffModuleConfig(object):
     moduleType = ''
     modulePrettyName = ''
+    moduleAction = ''
     modulePath = ''
 
-    def __init__(self, moduletype, moduleprettyname, modulepath):
+    def __init__(self, moduletype, moduleprettyname, moduleaction, modulepath):
         self.moduleType = moduletype
         self.modulePrettyName = moduleprettyname
+        self.moduleAction = moduleaction
         self.modulePath = modulepath
 
 
@@ -31,5 +33,8 @@ def config_parse(folder):
         module_prettyname = module_info["pretty-name"]
     except Exception as e:
         module_prettyname = 'No PrettyName'
-    module_configuration = CtffModuleConfig(module_type, module_prettyname, folder)
+
+    module_action = module_info["action"]
+
+    module_configuration = CtffModuleConfig(module_type, module_prettyname, module_action, folder)
     return module_configuration

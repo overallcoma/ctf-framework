@@ -28,14 +28,20 @@ def menu_select(folder):
     if selected_module.moduleType == "folder":
         selected_path = config_modules[selection].modulePath
         menu_select(selected_path)
-    if selected_module.moduleType == "installer":
-        selected_path = config_modules[selection].modulePath
-        setup_path = os.path.join(selected_path, "setup.py")
+    elif selected_module.moduleType != "folder":
+        setup_path = os.path.join(selected_module.modulePath, selected_module.moduleAction)
         if os.path.exists(setup_path):
-            print(selected_path)
-            subprocess.call(['python3', setup_path, ctff_dir])
+            subprocess.call("python3", setup_path, ctff_dir)
     menu_select(folder)
-    # If we haven't hit exit condition, we print the menu again
+    # if selected_module.moduleType == "installer":
+    #     selected_path = config_modules[selection].modulePath
+    #     setup_path = os.path.join(selected_path, selected_module.moduleAction)
+    #     setup_path = os.path.join(selected_path, "setup.py")
+    #     if os.path.exists(setup_path):
+    #         print(selected_path)
+    #         subprocess.call(['python3', setup_path, ctff_dir])
+    # menu_select(folder)
+    # # If we haven't hit exit condition, we print the menu again
     return False
 
 
