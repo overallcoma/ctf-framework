@@ -1,0 +1,2 @@
+apt-get install -y nuget mono-devel mono-xbuild
+nuget update -self

@@ -1,0 +1,33 @@
+FROM php:apache
+
+ARG var_flagpage
+ARG var_password
+
+WORKDIR /var/www/html
+
+RUN mkdir -p /db/
+
+COPY errorpage.html /var/www/html/error.html
+COPY flagpage.html /var/www/html/${var_flagpage}
+COPY htaccess /var/www/html/.htaccess
+COPY index.php /var/www/html/index.php
+COPY passhashgen.php /var/www/html/passhashgen.php
+COPY files/dbconfig.sh /db/dbconfig.sh
+
+RUN apt update -y
+RUN apt install sqlite3 -y
+
+RUN echo $var_password > /var/www/html/password.txt
+RUN echo $var_flagpage > /var/www/html/flagpage.txt
+RUN php /var/www/html/passhashgen.php
+RUN touch /db/password.db
+RUN chmod +x /db/dbconfig.sh
+RUN /bin/bash -c /db/dbconfig.sh
+
+RUN rm /var/www/html/passhashgen.php
+RUN rm /var/www/html/hash.txt
+RUN rm /var/www/html/password.txt
+RUN rm /var/www/html/flagpage.txt
+RUN rm /db/dbconfig.sh
+
+EXPOSE 80

@@ -1,0 +1,10 @@
+Command Execution Vulnerability in the form of a "ping checker" website.
+
+Several commands that could be used to extract text from a file have been replaced with C++ coded apps that
+print ASCII art to the screen instead of their normal operation.
+
+SUGGESTION:
+Input the flag in reverse as "rev" is an acceptable way to extract the flag.
+
+TO LAUNCH:
+python3 advancedweb-02.py -f "YourFlagHere"

@@ -1,0 +1,14 @@
+FROM php:apache
+
+COPY ./files/* /var/www/html/
+RUN mkdir -p /flag
+COPY ./flagfiles/* /flag/
+
+RUN mkdir -p /var/www/html/uploads
+RUN mkdir -p /var/www/html/tmp
+
+RUN chown www-data /var/www/html/uploads
+RUN chown www-data /var/www/html/tmp
+RUN chown www-data /flag
+
+EXPOSE 80

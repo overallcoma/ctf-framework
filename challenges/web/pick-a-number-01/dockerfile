@@ -1,0 +1,14 @@
+FROM php:7-apache
+
+COPY ./*.html /var/www/html
+
+COPY /pages/index.php /var/www/html
+COPY /pages/.htaccess /var/www/html
+COPY /pages/error.html /var/www/html
+
+RUN rm /etc/apache2/apache2.conf
+COPY ./configs/apache2.conf /etc/apache2/apache2.conf
+
+RUN chown root:root /var/www/html
+
+EXPOSE 80
