@@ -1,6 +1,16 @@
 import os
 import pathlib
 import time
+import sys
+import argparse
+
+# This is here to import the functions from ctff
+parser = argparse.ArgumentParser()
+parser.add_argument("path", type=str)
+args = parser.parse_args()
+sys.path.append(args.path)
+import ctff_functions
+
 
 challenge_name = "forensics-001"
 output_file = "output.jpg"
