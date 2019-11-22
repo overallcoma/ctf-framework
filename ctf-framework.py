@@ -29,9 +29,9 @@ def menu_select(folder):
         selected_path = config_modules[selection].modulePath
         menu_select(selected_path)
     elif selected_module.moduleType != "folder":
-        setup_path = os.path.join(selected_module.modulePath, selected_module.moduleAction)
+        setup_path =os.path.join(selected_module.modulePath, selected_module.moduleAction)
         if os.path.exists(setup_path):
-            subprocess.call("python3", setup_path, ctff_dir)
+            subprocess.call(["python3", setup_path, ctff_dir])
     menu_select(folder)
     # if selected_module.moduleType == "installer":
     #     selected_path = config_modules[selection].modulePath
