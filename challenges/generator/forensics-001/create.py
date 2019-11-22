@@ -10,7 +10,7 @@ source_pic = input("Please enter the file path for the picture to be altered: ")
 print("")
 output_path = os.path.join(str(pathlib.Path.home()), challenge_name, output_file)
 print("")
-change_output_path = input("Please select output path ({})".format(output_file))
+change_output_path = input("Please select output path ({})".format(output_path))
 if change_output_path:
     output_path = change_output_path
 
