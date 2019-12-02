@@ -67,10 +67,10 @@ if os.path.exists(source_pic):
             image_background.save(image_output)
 
         def hide_zip_in_image(outer_image, outer_image_output, inner_image, inner_image_output, zip_name):
-                copy(inner_image, inner_image_output)
-                zipfile.ZipFile(zip_name, mode='w').write(inner_image_output)
-                system_command = "cat {0} {1} > {2}".format(outer_image, zip_name, outer_image_output)
-                os.system(system_command)
+            copy(inner_image, inner_image_output)
+            zipfile.ZipFile(zip_name, mode='w').write(inner_image_output)
+            system_command = "cat {0} {1} > {2}".format(outer_image, zip_name, outer_image_output)
+            os.system(system_command)
 
         flag_image_name = "./flag_image.png"
         redherring_image_name = "./fake_image.png"
