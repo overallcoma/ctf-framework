@@ -66,39 +66,39 @@ if os.path.exists(source_pic):
             image_background.paste(image_foreground, (0, 0), image_foreground)
             image_background.save(image_output)
 
-            def hide_zip_in_image(outer_image, outer_image_output, inner_image, inner_image_output, zip_name):
+        def hide_zip_in_image(outer_image, outer_image_output, inner_image, inner_image_output, zip_name):
                 copy(inner_image, inner_image_output)
                 zipfile.ZipFile(zip_name, mode='w').write(inner_image_output)
                 system_command = "cat {0} {1} > {2}".format(outer_image, zip_name, outer_image_output)
                 os.system(system_command)
 
-            flag_image_name = "./flag_image.png"
-            redherring_image_name = "./fake_image.png"
-            font_file_name = "./freemon.ttf"
-            outer_image_filename = output_path
-            inner_image_filename = "./secrets.png"
-            hidden_zip_filename = "./bluefish.zip"
+        flag_image_name = "./flag_image.png"
+        redherring_image_name = "./fake_image.png"
+        font_file_name = "./freemon.ttf"
+        outer_image_filename = output_path
+        inner_image_filename = "./secrets.png"
+        hidden_zip_filename = "./bluefish.zip"
 
-            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
-            background_image_name = source_pic
+        background_image_name = source_pic
 
-            write_text_on_image(background_image_name, redherring_image_name, font_file_name, redherring_flag, "red")
-            write_text_on_image(background_image_name, flag_image_name, font_file_name, flag, "blue")
+        write_text_on_image(background_image_name, redherring_image_name, font_file_name, redherring_flag, "red")
+        write_text_on_image(background_image_name, flag_image_name, font_file_name, flag, "blue")
 
-            hide_zip_in_image(redherring_image_name, outer_image_filename, flag_image_name, inner_image_filename, hidden_zip_filename)
+        hide_zip_in_image(redherring_image_name, outer_image_filename, flag_image_name, inner_image_filename, hidden_zip_filename)
 
-            os.remove(flag_image_name)
-            os.remove(redherring_image_name)
-            os.remove(inner_image_filename)
-            os.remove(hidden_zip_filename)
-            print("")
-            print("I drew you a picture")
-            print("")
-            print("File with flag {} place in {}".format(flag, output_path))
-            print("")
-            print("Returning to menu in 5 seconds")
-            time.sleep(5)
+        os.remove(flag_image_name)
+        os.remove(redherring_image_name)
+        os.remove(inner_image_filename)
+        os.remove(hidden_zip_filename)
+        print("")
+        print("I drew you a picture")
+        print("")
+        print("File with flag {} place in {}".format(flag, output_path))
+        print("")
+        print("Returning to menu in 5 seconds")
+        time.sleep(5)
     except Exception as e:
         print("")
         print("Error creating image")
