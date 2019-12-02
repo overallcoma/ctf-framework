@@ -19,7 +19,7 @@ def yes_no_input(prompt_string):
     print(response_error)
 
 
-script_directory = os.path.dirname(os.path.dirname(os.path.abspath( __file__ )))
+script_directory = os.path.dirname(os.path.abspath( __file__ ))
 font_file_name = script_directory + "/files/freemon.ttf"
 
 try:
