@@ -19,6 +19,9 @@ def yes_no_input(prompt_string):
     print(response_error)
 
 
+script_directory = os.path.dirname(os.path.dirname(os.path.abspath( __file__ )))
+font_file_name = script_directory + "/files/freemon.ttf"
+
 try:
     from PIL import Image, ImageDraw, ImageFont
 except ImportError as e:
@@ -74,7 +77,6 @@ if os.path.exists(source_pic):
 
         flag_image_name = "./flag_image.png"
         redherring_image_name = "./fake_image.png"
-        font_file_name = "./freemon.ttf"
         outer_image_filename = output_path
         inner_image_filename = "./secrets.png"
         hidden_zip_filename = "./bluefish.zip"
