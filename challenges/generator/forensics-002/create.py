@@ -60,14 +60,14 @@ if os.path.exists(source_pic):
     try:
         source_pic_content = open(source_pic, "rb")
         source_pic_content = source_pic_content.read()
-        file_object = open(output_file, "wb+")
+        file_object = open(output_path, "wb+")
         file_object.writelines(source_pic_content)
 
-        im = Image.open(output_file)
+        im = Image.open(output_path)
         exif_dict = piexif.load(im.info["exif"])
         exif_dict["0th"][piexif.ImageIFD.ProcessingSoftware] = bytearray(flag, 'utf-8')
         exif_bytes = piexif.dump(exif_dict)
-        im.save(output_file, "jpeg", exif=exif_bytes)
+        im.save(output_path, "jpeg", exif=exif_bytes)
         print("")
         print("I drew you a picture")
         print("")
