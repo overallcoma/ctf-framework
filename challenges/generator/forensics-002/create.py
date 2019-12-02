@@ -23,7 +23,7 @@ except ImportError as e:
         print("")
         import_piexif = yes_no_input("Piexif is not present.  Would you like to install this module?")
         if import_piexif == 1:
-            subprocess.call(["python3-pip", "install", "piexif"])
+            subprocess.call(["pip3", "install", "piexif"])
     except Exception as e:
         print("Unable to install required module")
         print(e)
@@ -36,7 +36,7 @@ except ImportError as e:
         print("")
         import_piexif = yes_no_input("Pillow is not present.  Would you like to install this module?")
         if import_piexif == 1:
-            subprocess.call(["python3-pip", "install", "Pillow"])
+            subprocess.call(["pip3", "install", "Pillow"])
     except Exception as e:
         print("Unable to install required module")
         print(e)
