@@ -60,6 +60,7 @@ if os.path.exists(source_pic):
     try:
         source_pic_content = open(source_pic, "rb")
         source_pic_content = source_pic_content.read()
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
         file_object = open(output_path, "wb+")
         file_object.writelines(source_pic_content)
 

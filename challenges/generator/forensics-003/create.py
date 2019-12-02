@@ -79,6 +79,8 @@ if os.path.exists(source_pic):
             inner_image_filename = "./secrets.png"
             hidden_zip_filename = "./bluefish.zip"
 
+            os.makedirs(os.path.dirname(output_path), exist_ok=True)
+
             background_image_name = source_pic
 
             write_text_on_image(background_image_name, redherring_image_name, font_file_name, redherring_flag, "red")
