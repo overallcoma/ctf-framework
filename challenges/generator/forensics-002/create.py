@@ -62,7 +62,7 @@ if os.path.exists(source_pic):
         source_pic_content = source_pic_content.read()
         os.makedirs(os.path.dirname(output_path), exist_ok=True)
         file_object = open(output_path, "wb+")
-        file_object.writelines(source_pic_content)
+        file_object.write(source_pic_content)
 
         im = Image.open(output_path)
         exif_dict = piexif.load(im.info["exif"])
