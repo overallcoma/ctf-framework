@@ -16,31 +16,40 @@ def yes_no_input(prompt_string):
             return 0
     print(response_error)
 
+
 try:
     import piexif
-except ImportError as e:
+except ImportError:
     try:
         print("")
         import_piexif = yes_no_input("Piexif is not present.  Would you like to install this module?")
         if import_piexif == 1:
             subprocess.call(["pip3", "install", "piexif"])
     except Exception as e:
-        print("Unable to install required module")
+        print("Unable to install required module - piexif - 001")
         print(e)
         exit()
+except Exception as e:
+    print("Unable to install required module - piexif - 002")
+    print(e)
+    exit()
 
 try:
     from PIL import Image
-except ImportError as e:
+except ImportError:
     try:
         print("")
         import_piexif = yes_no_input("Pillow is not present.  Would you like to install this module?")
         if import_piexif == 1:
             subprocess.call(["pip3", "install", "Pillow"])
     except Exception as e:
-        print("Unable to install required module")
+        print("Unable to install required module - pillow - 001")
         print(e)
         exit()
+except Exception as e:
+    print("Unable to install required module - pillow - 002")
+    print(e)
+    exit()
 
 challenge_name = "forensics-002"
 output_file = "output.jpg"

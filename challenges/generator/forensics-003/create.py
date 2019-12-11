@@ -31,9 +31,13 @@ except ImportError as e:
         if import_piexif == 1:
             subprocess.call(["pip3", "install", "Pillow"])
     except Exception as e:
-        print("Unable to install required module")
+        print("Unable to install required module - pillow - 001")
         print(e)
         exit()
+except Exception as e:
+    print("Unable to install required module - pillow - 002")
+    print(e)
+    exit()
 
 challenge_name = "forensics-003"
 output_file = "output.png"
