@@ -1,0 +1,76 @@
+version: '3.3'
+
+services:
+  knockd:
+  # knockd and ssh target
+    hostname: TheRaven
+    restart: unless-stopped
+    build:
+      context: ./build/target-01
+      args:
+        - FLAG=${FLAG}
+        - GUEST_USERNAME=${GUEST_USERNAME}
+        - GUEST_PASSWORD=${GUEST_PASSWORD}
+    entrypoint: /docker-entrypoint.sh
+    ports:
+      - ${SSH_PORT}:22
+      - ${KNOCK_PORT_01}:10001
+      - ${KNOCK_PORT_02}:10002
+      - ${KNOCK_PORT_03}:10003
+    cap_add:
+      - NET_ADMIN
+  web01:
+    # index page
+    image: httpd
+    restart: unless-stopped
+    ports:
+      - ${INDEX_PORT}:80
+    volumes:
+      - type: bind
+        source: ./content/index
+        target: /usr/local/apache2/htdocs
+        read_only: true
+  web02:
+  # clue page 01
+    image: httpd
+    restart: unless-stopped
+    ports:
+      - ${HINT_PORT_01}:80
+    volumes:
+      - type: bind
+        source: ./content/page-01
+        target: /usr/local/apache2/htdocs
+        read_only: true
+  web03:
+  # clue page 02
+    image: httpd
+    restart: unless-stopped
+    ports:
+      - ${HINT_PORT_02}:80
+    volumes:
+      - type: bind
+        source: ./content/page-02
+        target: /usr/local/apache2/htdocs
+        read_only: true
+  web04:
+  # clue page 03
+    image: httpd
+    restart: unless-stopped
+    ports:
+      - ${HINT_PORT_03}:80
+    volumes:
+      - type: bind
+        source: ./content/page-03
+        target: /usr/local/apache2/htdocs
+        read_only: true
+  web05:
+  # clue page 04
+    image: httpd
+    restart: unless-stopped
+    ports:
+      - ${HINT_PORT_04}:80
+    volumes:
+      - type: bind
+        source: ./content/page-04
+        target: /usr/local/apache2/htdocs
+        read_only: true
