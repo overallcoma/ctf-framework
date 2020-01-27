@@ -38,9 +38,23 @@ services:
       - ${HINT_PORT_01}:80
     volumes:
       - type: bind
-        source: ./content/page-01
-        target: /usr/local/apache2/htdocs
+        source: ./content/page-01/source
+        target: /usr/local/apache2/htdocs/source
         read_only: true
+    environment:
+      - PORT=${HINT_PORT_01}
+      - GUEST_USERNAME=${GUEST_USERNAME}
+    command: >
+      /bin/bash -c "cp /usr/local/apache2/htdocs/source/index.html
+      /usr/local/apache2/htdocs/index.html &&
+      sed -i -e "s/UNCONFIGURED_PORT/${KNOCK_PORT_01}/g"
+      /usr/local/apache2/htdocs/index.html &&
+      sed -i -e "s/UNCONFIGURED_USERNAME/${GUEST_USERNAME}/g"
+      /usr/local/apache2/htdocs/index.html &&
+      cp /usr/local/apache2/htdocs/source/.htaccess /usr/local/apache2/htdocs/.htaccess &&
+      sed -i '/<Directory \/usr\/local/\apache2/\htdocs\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/'
+      /usr/local/apache2/htdocs &&
+      httpd-foreground"
   web03:
   # clue page 02
     image: httpd
@@ -49,9 +63,23 @@ services:
       - ${HINT_PORT_02}:80
     volumes:
       - type: bind
-        source: ./content/page-02
-        target: /usr/local/apache2/htdocs
+        source: ./content/page-02/source
+        target: /usr/local/apache2/htdocs/source
         read_only: true
+    environment:
+      - PORT=${HINT_PORT_02}
+      - GUEST_PASSWORD=${GUEST_PASSWORD}
+    command: >
+      /bin/bash -c "cp /usr/local/apache2/htdocs/source/index.html
+      /usr/local/apache2/htdocs/index.html &&
+      sed -i -e "s/UNCONFIGURED_PORT/${KNOCK_PORT_02}/g"
+      /usr/local/apache2/htdocs/index.html &&
+      sed -i -e "s/UNCONFIGURED_PASSWORD/${GUEST_PASSWORD}/g"
+      /usr/local/apache2/htdocs/index.html &&
+      cp /usr/local/apache2/htdocs/source/.htaccess /usr/local/apache2/htdocs/.htaccess &&
+      sed -i '/<Directory \/usr\/local/\apache2/\htdocs\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/'
+      /usr/local/apache2/htdocs &&
+      httpd-foreground"
   web04:
   # clue page 03
     image: httpd
@@ -60,9 +88,20 @@ services:
       - ${HINT_PORT_03}:80
     volumes:
       - type: bind
-        source: ./content/page-03
-        target: /usr/local/apache2/htdocs
+        source: ./content/page-03/source
+        target: /usr/local/apache2/htdocs/source
         read_only: true
+    environment:
+      - PORT=${HINT_PORT_03}
+    command: >
+      /bin/bash -c "cp /usr/local/apache2/htdocs/source/index.html
+      /usr/local/apache2/htdocs/index.html &&
+      sed -i -e "s/UNCONFIGURED_PORT/${KNOCK_PORT_03}/g"
+      /usr/local/apache2/htdocs/index.html &&
+      cp /usr/local/apache2/htdocs/source/.htaccess /usr/local/apache2/htdocs/.htaccess &&
+      sed -i '/<Directory \/usr\/local/\apache2/\htdocs\/>/,/<\/Directory>/ s/AllowOverride None/AllowOverride All/'
+      /usr/local/apache2/htdocs &&
+      httpd-foreground"
   web05:
   # clue page 04
     image: httpd
