@@ -1,0 +1,29 @@
+FROM debian:latest
+
+RUN docker-php-ext-install mysqli
+
+
+ARG FLAG
+ARG GUEST_USERNAME
+ARG GUEST_PASSWORD
+
+RUN apt update -y
+RUN apt install openssh-server -y
+RUN apt install iptables -y
+RUN apt install knockd -y
+
+RUN mkdir -p /var/run/sshd
+RUN ssh-keygen -f /root/.ssh/id_rsa -N ""
+RUN ssh-keygen -A
+
+RUN useradd ${GUEST_USERNAME}
+RUN echo "${GUEST_USERNAME}:${GUEST_PASSWORD}" | chpasswd
+RUN mkdir /home/$GUEST_USERNAME
+
+COPY ./knockd.conf /etc/knockd.conf
+COPY ./docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+RUN chown root /home/${GUEST_USERNAME}
+RUN echo "${FLAG}" > /home/${GUEST_USERNAME}/flag.txt
+RUN chmod 644 /home/${GUEST_USERNAME}/flag.txt
