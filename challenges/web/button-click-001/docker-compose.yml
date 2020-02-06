@@ -6,10 +6,10 @@ services:
     image: mysql
     restart: unless-stopped
     environment:
-      - MYSLQ_ROOT_PASSWORD: somepassword
-      - MYSQL_DATABASE: buttonclickerdb
-      - MYSQL_USER: buttonclick
-      - MYSQL_PASSWORD: buttonclick
+      MYSQL_ROOT_PASSWORD: somepassword
+      MYSQL_DATABASE: buttonclickerdb
+      MYSQL_USER: buttonclick
+      MYSQL_PASSWORD: buttonclick
   web:
     # php apache content
     depends_on:
@@ -20,34 +20,6 @@ services:
       - ${WEB_PORT}:80
     volumes:
       - type: bind
-        source: ./content/web
-        target: /var/www/html
+        source: ./content/web/setup
+        target: /setup
         read_only: true
-
-
-  web03:
-  # clue page 02
-    image: httpd
-    restart: unless-stopped
-    ports:
-      - ${HINT_PORT_02}:80
-    volumes:
-      - type: bind
-        source: ./content/page-02/source
-        target: /usr/local/apache2/htdocs/source
-        read_only: true
-      - type: bind
-        source: ./content/page-02/httpd.conf
-        target: /usr/local/apache2/conf/httpd.conf
-        read_only: true
-    environment:
-      - PORT=${HINT_PORT_02}
-      - GUEST_PASSWORD=${GUEST_PASSWORD}
-    command: >
-      /bin/bash -c "cp /usr/local/apache2/htdocs/source/index.html
-      /usr/local/apache2/htdocs/index.html &&
-      sed -i -e "s/UNCONFIGURED_PORT/${KNOCK_PORT_02}/g"
-      /usr/local/apache2/htdocs/index.html &&
-      sed -i -e "s/UNCONFIGURED_PASSWORD/${GUEST_PASSWORD}/g"
-      /usr/local/apache2/htdocs/index.html &&
-      httpd-foreground"
