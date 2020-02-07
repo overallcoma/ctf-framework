@@ -1,12 +1,10 @@
 <?php
-$servername = "db";
-$username = "buttonclick";
-$password = "buttonclick";
-$dbname = "buttonclickerdb";
+    $servername = "db";
+    $username = "buttonclick";
+    $password = "buttonclick";
+    $dbname = "buttonclickerdb";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -19,7 +17,6 @@ $sql = "CREATE TABLE IF NOT EXISTS buttonclicker_table
         click_count INT NOT NULL,
         primary key (user_id)
      );";
-
 $result = $conn->query($sql);
 echo $result;
 $conn->close();
